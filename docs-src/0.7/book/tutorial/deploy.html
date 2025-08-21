@@ -1,0 +1,387 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Deploying</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/DioxusLabs/dioxus/edit/main/docs/guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/DioxusLabs/dioxus/edit/main/docs/guide/src/tutorial/deploy.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="deploying"><a class="header" href="#deploying">Deploying</a></h1>
+<p>We're <em>finally</em> ready to deploy our bundled apps into the world. Congrats on making it this far!</p>
+<p>This step is optional for the tutorial but worth covering to understand the process. Feel free to skip ahead to <a href="next_steps.html">next steps</a> if you're not interested in deploying.</p>
+<h2 id="dioxus-deploy"><a class="header" href="#dioxus-deploy">Dioxus Deploy</a></h2>
+<p>As mentioned in the <a href="../index.html#whos-funding-dioxus">introduction</a>, Dioxus is an independent project with aspirations to fund itself through a paid deploy platform. Hopefully, one day, enough people ship apps with <a href="https://dioxuslabs.com/deploy">Dioxus Deploy</a> to fund development on Dioxus itself!</p>
+<p>Currently, Dioxus does not provide its own deploy platform. If you want to sign-up for the beta and help us design the ideal "end-to-end app-development experience," please <a href="https://forms.gle/zeBZmrjSkajqg7hUA">join the waitlist!</a></p>
+<p><img src="/assets/06_docs/deploy_screenshot.png" alt="Deploy" /></p>
+<h2 id="deploying-your-desktop-and-mobile-apps"><a class="header" href="#deploying-your-desktop-and-mobile-apps">Deploying your Desktop and Mobile apps</a></h2>
+<p>Generally, deploying a desktop app is as simple as distributing the bundle directly. Simply upload your app bundles to a host like GitHub or S3. With a download link, your users can easily download and install your apps.</p>
+<blockquote>
+<p>📣 When shipping fullstack apps to production, you'll want to make sure to set your backend API URL properly as <a href="#fullstack-desktop-and-mobile">covered later</a>.</p>
+</blockquote>
+<p>If you'd like to distribute your app through app stores, you'll need to follow some additional steps.</p>
+<ul>
+<li><a href="https://developer.apple.com/ios/submit/">iOS</a>: Directly publish to the Apple App Store</li>
+<li><a href="https://developer.apple.com/macos/submit/">macOS</a>: Directly publish to the Apple App Store</li>
+<li><a href="https://developer.android.com/studio/publish">Android</a>: Directly publish to the Google Play Store</li>
+</ul>
+<p>Tauri provides some <a href="https://tauri.app/distribute/">helpful guides</a> for deploying Tauri apps which, while not Dioxus apps, need to follow many of the same steps for deploying to app stores.</p>
+<p>Making native app distribution easier is a top priority for Dioxus Deploy!</p>
+<h2 id="deploy-requirements"><a class="header" href="#deploy-requirements">Deploy Requirements</a></h2>
+<p>Dioxus web apps are structured as a Client bundle and a Server executable. Generally, any deploy provider that exposes a simple container will be sufficient for a Dioxus fullstack web application.</p>
+<p>Some providers like <a href="http://workers.cloudflare.com">Cloudflare Workers</a> and <a href="https://www.fermyon.com/spin">Fermyon Spin</a> provide WASM-based containers for apps. WASM runtimes are typically cheaper to operate and can horizontally scale better than a traditional virtual-machine based container. When deploying on WASM runtimes, you will need to create a WASM build of your server manually.</p>
+<p>Running the webserver is as simple as executing <code>./server</code>. Make sure to set the IP and PORT environment variables correctly:</p>
+<p><img src="/assets/06_docs/serving_server.png" alt="Serving a Server" /></p>
+<h2 id="choosing-a-deploy-provider"><a class="header" href="#choosing-a-deploy-provider">Choosing a deploy provider</a></h2>
+<p>There are <em>many</em> deploy providers! We're not going to get too deep into the pros/cons of any particular provider. Generally, providers are good at one of a few categories: price, performance, UI/UX, advanced features, and enterprise requirements.</p>
+<p>Depending on your app, you might have strict requirements like SOC2 or HIPAA compliance. Make sure to do your own research for your own use-case.</p>
+<ul>
+<li><a href="http://aws.amazon.com">AWS</a>: Full-featured cloud provider powered by Amazon.</li>
+<li><a href="https://cloud.google.com">GCP</a>: Full-featured cloud provider powered by Google.</li>
+<li><a href="http://azure.microsoft.com">Azure</a>: Full-featured cloud provider powered by Microsoft.</li>
+<li><a href="http://fly.io">Fly.io</a>: Simple scale-to-zero micro-vm-based cloud with integrated wireguard.</li>
+<li><a href="https://vercel.com">Vercel</a>: Developer-focused cloud built on AWS cloud functions popular with JavaScript frameworks.</li>
+<li><a href="http://render.com">Render</a>: A "Modern Heroku" focused on developer experience and simplicity.</li>
+<li><a href="https://www.digitalocean.com">Digital Ocean</a>: A cloud built around virtual machines, databases, and storage.</li>
+</ul>
+<p>For <em>HotDog</em> we're going to deploy on <a href="http://fly.io">Fly.io</a>. We like <a href="http://fly.io">Fly.io</a> for a number of reasons. Most importantly, Fly is built on Amazon's <a href="https://firecracker-microvm.github.io">Firecracker</a> project which is entirely written in Rust!</p>
+<p>Fly is also quite simple to get started - just log in with either your GitHub account or Google account.</p>
+<h2 id="building-a-dockerfile"><a class="header" href="#building-a-dockerfile">Building a Dockerfile</a></h2>
+<p>Some deploy providers have prebuilt solutions for various runtimes. For example, some have dedicated NodeJS and Python runtimes with strict requirements.</p>
+<p>With Rust apps, there generally isn't a prebuilt "pack" to target. In these cases, we need to write a simple Dockerfile which compiles and starts our apps.</p>
+<p>Our Dockerfile will have three phases. The first phase downloads and caches dependencies so incremental builds stay fast:</p>
+<pre><code class="language-dockerfile">FROM rust:1 AS chef
+RUN cargo install cargo-chef
+WORKDIR /app
+
+FROM chef AS planner
+COPY . .
+RUN cargo chef prepare --recipe-path recipe.json
+</code></pre>
+<p>In the second phase, we use cargo chef to load cached dependencies and preform the build:</p>
+<pre><code class="language-dockerfile">FROM chef AS builder
+COPY --from=planner /app/recipe.json recipe.json
+RUN cargo chef cook --release --recipe-path recipe.json
+COPY . .
+
+# Install `dx`
+RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+RUN cargo binstall dioxus-cli --root /.cargo -y --force
+ENV PATH="/.cargo/bin:$PATH"
+
+# Create the final bundle folder. Bundle always executes in release mode with optimizations enabled
+RUN dx bundle --web
+</code></pre>
+<p>Finally, we copy the built "web" folder to the "slim" runtime that serves our app.</p>
+<pre><code class="language-dockerfile">FROM chef AS runtime
+COPY --from=builder /app/target/dx/hot_dog/release/web/ /usr/local/app
+
+# set our port and make sure to listen for all connections
+ENV PORT=8080
+ENV IP=0.0.0.0
+
+# expose the port 8080
+EXPOSE 8080
+
+WORKDIR /usr/local/app
+ENTRYPOINT [ "/usr/local/app/server" ]
+</code></pre>
+<p>It's also a smart idea to set up a <code>.dockerignore</code> file:</p>
+<pre><code>**/target
+**/dist
+LICENSES
+LICENSE
+temp
+README.md
+</code></pre>
+<h2 id="deploying-to-fly"><a class="header" href="#deploying-to-fly">Deploying to Fly</a></h2>
+<p>To get started with Fly, we need to go through the <a href="https://fly.io/app/sign-up">Sign Up flow</a> and enter our details. This shouldn't take too long.</p>
+<p>We'll add the dockerfile from above along with the dockerignore. We'll want to <a href="https://fly.io/docs/flyctl/install/">install <code>flyctl</code></a> which also installs the <code>fly</code> CLI.</p>
+<p>Let's call <a href="https://fly.io/docs/flyctl/launch/"><code>fly launch</code></a> which will automatically initialize our <code>fly.toml</code>.</p>
+<p><img src="/assets/06_docs/fly_launch.png" alt="Fly Launch" /></p>
+<p><code>fly launch</code> will spin up a build machine for us and build our app. In a minute or two, our app should be fully built and deployed.</p>
+<p>If we ever want to re-deploy our code, we can run <code>fly deploy</code>.</p>
+<p><img src="/assets/06_docs/fly_deploy.mp4" alt="Running fly deploy" /></p>
+<p>We can also add a volume to our app to persist our Sqlite database by adding a <code>[mounts]</code> section to our Fly.toml:</p>
+<pre><code class="language-toml">[mounts]
+  source = "hotdogdb"
+  destination = "/usr/local/app/hotdogdb"
+</code></pre>
+<p>Once the build is complete, Fly will assign our app a URL that we can customize later. With any luck, our app should be live!</p>
+<p><img src="/assets/06_docs/fly-deployed.png" alt="Live App" /></p>
+<h2 id="continuous-deployment"><a class="header" href="#continuous-deployment">Continuous Deployment</a></h2>
+<p>Fly also supports <a href="https://fly.io/docs/app-guides/continuous-deployment-with-github-actions/">continuous deployment</a>. Whenever we push to our GitHub repository, we can execute <code>fly deploy</code> automatically. This can serve as a foundation for staging environments and automatic releases.</p>
+<p>Our app just needs a <code>.github/workflows/fly-deploy.yml</code>.</p>
+<pre><code class="language-yml">name: Fly Deploy
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    name: Deploy app
+    runs-on: ubuntu-latest
+    concurrency: deploy-group
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+</code></pre>
+<h2 id="fullstack-desktop-and-mobile"><a class="header" href="#fullstack-desktop-and-mobile">Fullstack Desktop and Mobile</a></h2>
+<p>Now that our backend is live, we can wire up the API to our native apps. By default, Dioxus doesn't know where to find your API, so you'll need to specify the URL manually by calling <code>server_fn::client::set_server_url</code>.</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/guide_deploy.rs:set_server_url}}</code></pre>
+<p>Note that as our app changes, the "true" endpoint of our server functions might change. The <code>#[server]</code> macro generates an API endpoint with the form of <code>/api/fetch_dogs-jkhj12</code> where the trailing data is a unique hash. As we update our server functions, the hash will change.</p>
+<p>To make server functions maintain a stable endpoint, we can manually name them with the <code>endpoint = "xyz"</code> attribute.</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/guide_deploy.rs:stable_server_endpoints}}</code></pre>
+<p>Let's re-deploy our web app with <code>fly deploy</code>. This deploy should complete faster thanks to <code>cargo chef</code> caching our build.</p>
+<p>Now, with <code>dx serve --webview</code>, we should be able to interact with the same backend across web and desktop.</p>
+<p>Amazing! Our startup is coming along nicely.</p>
+<p><img src="/assets/06_docs/full-crossplatform.png" alt="Full Cross Build" /></p>
+<h2 id="next-steps"><a class="header" href="#next-steps">Next Steps</a></h2>
+<p>Our app isn't done yet, but this guide has become pretty long!</p>
+<p>There's so much extra to do:</p>
+<ul>
+<li>Adding users, login, and auth.</li>
+<li>Protecting our site from DDOS with tools Cloudflare.</li>
+<li>Adding more features</li>
+<li>Marketing and sharing with friends!</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../tutorial/bundle.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../tutorial/next_steps.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../tutorial/bundle.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../tutorial/next_steps.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+        <script>
+            window.playground_line_numbers = true;
+        </script>
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js"></script>
+        <script src="../mode-rust.js"></script>
+        <script src="../editor.js"></script>
+        <script src="../theme-dawn.js"></script>
+        <script src="../theme-tomorrow_night.js"></script>
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,466 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Bundle Config</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/DioxusLabs/dioxus/edit/main/docs/guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/DioxusLabs/dioxus/edit/main/docs/guide/src/guides/deploy/config.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h3 id="bundling-config"><a class="header" href="#bundling-config">Bundling config</a></h3>
+<p>The <code>[bundle]</code> section of our Dioxus.toml can take a variety of options.</p>
+<p>Here are the options, in the form of Rust structs.</p>
+<pre><code class="language-rust">#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub(crate) struct BundleConfig {
+    /// eg. com.dioxuslabs
+    pub(crate) identifier: Option&lt;String&gt;,
+    /// eg. DioxusLabs
+    pub(crate) publisher: Option&lt;String&gt;,
+    /// eg. assets/icon.png
+    pub(crate) icon: Option&lt;Vec&lt;String&gt;&gt;,
+    /// eg. Extra assets like "img.png"
+    pub(crate) resources: Option&lt;Vec&lt;String&gt;&gt;,
+    /// eg. DioxusLabs
+    pub(crate) copyright: Option&lt;String&gt;,
+    /// eg. "Social Media"
+    pub(crate) category: Option&lt;String&gt;,
+    /// eg. "A great social media app"
+    pub(crate) short_description: Option&lt;String&gt;,
+    /// eg. "A social media app that makes people love app development"
+    pub(crate) long_description: Option&lt;String&gt;,
+    /// eg. extra binaries (like tools) to include in the final app
+    pub(crate) external_bin: Option&lt;Vec&lt;String&gt;&gt;,
+    /// Additional debian-only settings (see below)
+    pub(crate) deb: Option&lt;DebianSettings&gt;,
+    /// Additional macos settings (see below)
+    pub(crate) macos: Option&lt;MacOsSettings&gt;,
+    /// Additional windows settings (see below)
+    pub(crate) windows: Option&lt;WindowsSettings&gt;,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub(crate) struct DebianSettings {
+    // OS-specific settings:
+    /// the list of debian dependencies.
+    pub depends: Option&lt;Vec&lt;String&gt;&gt;,
+    /// the list of dependencies the package provides.
+    pub provides: Option&lt;Vec&lt;String&gt;&gt;,
+    /// the list of package conflicts.
+    pub conflicts: Option&lt;Vec&lt;String&gt;&gt;,
+    /// the list of package replaces.
+    pub replaces: Option&lt;Vec&lt;String&gt;&gt;,
+    /// List of custom files to add to the deb package.
+    /// Maps the path on the debian package to the path of the file to include (relative to the current working directory).
+    pub files: HashMap&lt;PathBuf, PathBuf&gt;,
+    /// Path to a custom desktop file Handlebars template.
+    ///
+    /// Available variables: `categories`, `comment` (optional), `exec`, `icon` and `name`.
+    pub desktop_template: Option&lt;PathBuf&gt;,
+    /// Define the section in Debian Control file. See : &lt;https://www.debian.org/doc/debian-policy/ch-archive.html#s-subsections&gt;
+    pub section: Option&lt;String&gt;,
+    /// Change the priority of the Debian Package. By default, it is set to `optional`.
+    /// Recognized Priorities as of now are :  `required`, `important`, `standard`, `optional`, `extra`
+    pub priority: Option&lt;String&gt;,
+    /// Path of the uncompressed Changelog file, to be stored at /usr/share/doc/package-name/changelog.gz. See
+    /// &lt;https://www.debian.org/doc/debian-policy/ch-docs.html#changelog-files-and-release-notes&gt;
+    pub changelog: Option&lt;PathBuf&gt;,
+    /// Path to script that will be executed before the package is unpacked. See
+    /// &lt;https://www.debian.org/doc/debian-policy/ch-maintainerscripts.html&gt;
+    pub pre_install_script: Option&lt;PathBuf&gt;,
+    /// Path to script that will be executed after the package is unpacked. See
+    /// &lt;https://www.debian.org/doc/debian-policy/ch-maintainerscripts.html&gt;
+    pub post_install_script: Option&lt;PathBuf&gt;,
+    /// Path to script that will be executed before the package is removed. See
+    /// &lt;https://www.debian.org/doc/debian-policy/ch-maintainerscripts.html&gt;
+    pub pre_remove_script: Option&lt;PathBuf&gt;,
+    /// Path to script that will be executed after the package is removed. See
+    /// &lt;https://www.debian.org/doc/debian-policy/ch-maintainerscripts.html&gt;
+    pub post_remove_script: Option&lt;PathBuf&gt;,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub(crate) struct WixSettings {
+    pub(crate) language: Vec&lt;(String, Option&lt;PathBuf&gt;)&gt;,
+    pub(crate) template: Option&lt;PathBuf&gt;,
+    pub(crate) fragment_paths: Vec&lt;PathBuf&gt;,
+    pub(crate) component_group_refs: Vec&lt;String&gt;,
+    pub(crate) component_refs: Vec&lt;String&gt;,
+    pub(crate) feature_group_refs: Vec&lt;String&gt;,
+    pub(crate) feature_refs: Vec&lt;String&gt;,
+    pub(crate) merge_refs: Vec&lt;String&gt;,
+    pub(crate) skip_webview_install: bool,
+    pub(crate) license: Option&lt;PathBuf&gt;,
+    pub(crate) enable_elevated_update_task: bool,
+    pub(crate) banner_path: Option&lt;PathBuf&gt;,
+    pub(crate) dialog_image_path: Option&lt;PathBuf&gt;,
+    pub(crate) fips_compliant: bool,
+    /// MSI installer version in the format `major.minor.patch.build` (build is optional).
+    ///
+    /// Because a valid version is required for MSI installer, it will be derived from [`PackageSettings::version`] if this field is not set.
+    ///
+    /// The first field is the major version and has a maximum value of 255. The second field is the minor version and has a maximum value of 255.
+    /// The third and fourth fields have a maximum value of 65,535.
+    ///
+    /// See &lt;https://learn.microsoft.com/en-us/windows/win32/msi/productversion&gt; for more info.
+    pub version: Option&lt;String&gt;,
+    /// A GUID upgrade code for MSI installer. This code **_must stay the same across all of your updates_**,
+    /// otherwise, Windows will treat your update as a different app and your users will have duplicate versions of your app.
+    ///
+    /// By default, tauri generates this code by generating a Uuid v5 using the string `&lt;productName&gt;.exe.app.x64` in the DNS namespace.
+    /// You can use Tauri's CLI to generate and print this code for you by running `tauri inspect wix-upgrade-code`.
+    ///
+    /// It is recommended that you set this value in your tauri config file to avoid accidental changes in your upgrade code
+    /// whenever you want to change your product name.
+    pub upgrade_code: Option&lt;uuid::Uuid&gt;,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub(crate) struct MacOsSettings {
+    pub(crate) frameworks: Option&lt;Vec&lt;String&gt;&gt;,
+    pub(crate) minimum_system_version: Option&lt;String&gt;,
+    pub(crate) license: Option&lt;String&gt;,
+    pub(crate) exception_domain: Option&lt;String&gt;,
+    pub(crate) signing_identity: Option&lt;String&gt;,
+    pub(crate) provider_short_name: Option&lt;String&gt;,
+    pub(crate) entitlements: Option&lt;String&gt;,
+    pub(crate) info_plist_path: Option&lt;PathBuf&gt;,
+    /// List of custom files to add to the application bundle.
+    /// Maps the path in the Contents directory in the app to the path of the file to include (relative to the current working directory).
+    pub files: HashMap&lt;PathBuf, PathBuf&gt;,
+    /// Preserve the hardened runtime version flag, see &lt;https://developer.apple.com/documentation/security/hardened_runtime&gt;
+    ///
+    /// Settings this to `false` is useful when using an ad-hoc signature, making it less strict.
+    pub hardened_runtime: bool,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub(crate) struct WindowsSettings {
+    pub(crate) digest_algorithm: Option&lt;String&gt;,
+    pub(crate) certificate_thumbprint: Option&lt;String&gt;,
+    pub(crate) timestamp_url: Option&lt;String&gt;,
+    pub(crate) tsp: bool,
+    pub(crate) wix: Option&lt;WixSettings&gt;,
+    pub(crate) icon_path: Option&lt;PathBuf&gt;,
+    pub(crate) webview_install_mode: WebviewInstallMode,
+    pub(crate) webview_fixed_runtime_path: Option&lt;PathBuf&gt;,
+    pub(crate) allow_downgrades: bool,
+    pub(crate) nsis: Option&lt;NsisSettings&gt;,
+    /// Specify a custom command to sign the binaries.
+    /// This command needs to have a `%1` in it which is just a placeholder for the binary path,
+    /// which we will detect and replace before calling the command.
+    ///
+    /// Example:
+    /// ```text
+    /// sign-cli --arg1 --arg2 %1
+    /// ```
+    ///
+    /// By Default we use `signtool.exe` which can be found only on Windows so
+    /// if you are on another platform and want to cross-compile and sign you will
+    /// need to use another tool like `osslsigncode`.
+    pub sign_command: Option&lt;CustomSignCommandSettings&gt;,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub(crate) struct NsisSettings {
+    pub(crate) template: Option&lt;PathBuf&gt;,
+    pub(crate) license: Option&lt;PathBuf&gt;,
+    pub(crate) header_image: Option&lt;PathBuf&gt;,
+    pub(crate) sidebar_image: Option&lt;PathBuf&gt;,
+    pub(crate) installer_icon: Option&lt;PathBuf&gt;,
+    pub(crate) install_mode: NSISInstallerMode,
+    pub(crate) languages: Option&lt;Vec&lt;String&gt;&gt;,
+    pub(crate) custom_language_files: Option&lt;HashMap&lt;String, PathBuf&gt;&gt;,
+    pub(crate) display_language_selector: bool,
+    pub(crate) start_menu_folder: Option&lt;String&gt;,
+    pub(crate) installer_hooks: Option&lt;PathBuf&gt;,
+    /// Try to ensure that the WebView2 version is equal to or newer than this version,
+    /// if the user's WebView2 is older than this version,
+    /// the installer will try to trigger a WebView2 update.
+    pub minimum_webview2_version: Option&lt;String&gt;,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub(crate) enum NSISInstallerMode {
+    CurrentUser,
+    PerMachine,
+    Both,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub(crate) enum WebviewInstallMode {
+    Skip,
+    DownloadBootstrapper { silent: bool },
+    EmbedBootstrapper { silent: bool },
+    OfflineInstaller { silent: bool },
+    FixedRuntime { path: PathBuf },
+}
+
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct CustomSignCommandSettings {
+    /// The command to run to sign the binary.
+    pub cmd: String,
+    /// The arguments to pass to the command.
+    ///
+    /// "%1" will be replaced with the path to the binary to be signed.
+    pub args: Vec&lt;String&gt;,
+}
+
+#[derive(Clone, Copy, Debug)]
+pub(crate) enum PackageType {
+    /// "macos"
+    MacOsBundle,
+    /// "ios"
+    IosBundle,
+    /// "msi"
+    WindowsMsi,
+    /// "nsis"
+    Nsis,
+    /// "deb"
+    Deb,
+    /// "rpm"
+    Rpm,
+    /// "appimage"
+    AppImage,
+    /// "dmg"
+    Dmg,
+    /// "updater"
+    Updater,
+}</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../guides/deploy/android.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../guides/organization/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../guides/deploy/android.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../guides/organization/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+        <script>
+            window.playground_line_numbers = true;
+        </script>
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../../ace.js"></script>
+        <script src="../../mode-rust.js"></script>
+        <script src="../../editor.js"></script>
+        <script src="../../theme-dawn.js"></script>
+        <script src="../../theme-tomorrow_night.js"></script>
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

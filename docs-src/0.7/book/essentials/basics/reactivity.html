@@ -1,0 +1,291 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Intro to Reactivity</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/DioxusLabs/dioxus/edit/main/docs/guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/DioxusLabs/dioxus/edit/main/docs/guide/src/essentials/basics/reactivity.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="intro-to-reactivity"><a class="header" href="#intro-to-reactivity">Intro to Reactivity</a></h1>
+<p>So far, we've covered how to declare static user interfaces with RSX. Now, it's time to make our UI interactive. When the user clicks a button, moves their cursor, or inputs text, we want to update our UI in response.</p>
+<p>The act of reacting to a state changes is called <em>reactivity</em>. Reactivity sits at the very heart of Dioxus. Everything from data fetching to routing is centered around reacting to state changes.</p>
+<p>Similar to libraries like ReactJS, Dioxus provides an built-in reactivity system, saving you from manually queuing re-renders of components. If you're coming from web development, this should feel familiar. If you're mostly experienced with immediate-mode GUIs, this might seem foreign.</p>
+<p>Reactivity systems enable larger, more modular, complex GUIs than is typically achievable with other approaches. To build UIs that effectively leverage reactivity, we follow three main pillars:</p>
+<ul>
+<li><strong>Data Flows Down</strong>: Our apps maintain a one-way flow of data from parents to children</li>
+<li><strong>Data is Tracked</strong>: Modifications to data is observed by reactive scopes and side-effects</li>
+<li><strong>Data is Derived</strong>: Our UI and state is a pure function of our data sources</li>
+</ul>
+<h2 id="pillar-1-data-flows-down"><a class="header" href="#pillar-1-data-flows-down">Pillar 1: Data Flows Down</a></h2>
+<p>The first fundamental pillar of reactivity: data flows down. As our apps grow in size, so do their complexity. In apps with dozens of screens and hundreds of components, it can become difficult to reason about relationships between parent and child elements. By enforcing a unidirectional flow of data through our app, we can be sure that a child component renders <em>purely</em> as a function of its inputs.</p>
+<p>To make our apps interactive, we follow a similar pattern. Components provide two items: <em>values</em> and <em>functions</em> to modify those values. These items are passed <em>down</em> the tree as properties. Dioxus does not provide a way for child components to "reach up" and modify the state of a parent.</p>
+<p>The functions we pass down tree are free to mutate state in the <em>current</em> component. However, a child component cannot <em>directly</em> modify its parent's state. This ensures all mutations to state are defined in the <strong>same scope as the state itself</strong>, making it easier to reason about our app's state at scale.</p>
+<p><img src="/assets/07/reactivity-tree.png" alt="Reactivity Tree" /></p>
+<h2 id="pillar-2-data-is-tracked"><a class="header" href="#pillar-2-data-is-tracked">Pillar 2: Data is Tracked</a></h2>
+<p>The second fundamental pillar of reactivity: data is tracked. When you use various state primitives in Dioxus, the Dioxus runtime <em>tracks</em> changes to underlying value. Whenever you call <code>.set()</code> or <code>.write()</code> on a <em>Reactive Value</em>, that operation is <em>observed</em> and <em>effects</em> are run.</p>
+<p>The core Reactive Value in Dioxus is the Signal. When Signals are used in <em>reactive contexts</em>, their associated <em>reads</em> and <em>writes</em> are tracked. Every component is a reactive context. Whenever a Signal's value is modified, a <em>side-effect</em> is queued that re-reruns any reactive contexts that read the signal's value.</p>
+<pre><code class="language-rust">#[component]
+fn Filter() -&gt; Element {
+    let mut selection = use_signal(|| "none");
+
+    rsx! {
+        // reading the *selection* value has a side-effect of re-rendering this component
+        div { "{selection}" }
+
+        // Calling `.set()` runs side-effects
+        button { onclick: move |_| selection.set("dogs"), "Set Filter" }
+    }
+}</code></pre>
+<p>Many hooks utilize reactive contexts to attach their own side-effects.</p>
+<h2 id="pillar-3-data-is-derived"><a class="header" href="#pillar-3-data-is-derived">Pillar 3: Data is Derived</a></h2>
+<p>The third pillar of reactivity: values are <em>derived</em>. After any state in our app changes, we want the UI to match what we declared in our RSX. In this case, the UI is <em>derived</em> from our app state. Similarly, in reactive programming, all data is either a source, or <em>derived</em> from a source.</p>
+<p>When rendering components, we therefore prefer to perform any transformations of the data while rendering or in a memo. We <em>do not</em> modify the data while rendering.</p>
+<pre><code class="language-rust">// ✅ *num_names* is derived from "names"
+let names = use_signal(|| vec!["Jane", "Jack", "Jill"]);
+let num_names = names.read().len();
+
+// ❌ we do not store num_names in a signal
+let names = use_signal(|| vec!["Jane", "Jack", "Jill"]);
+let mut num_names = use_signal(|| 0);
+num_names.set(names.len());</code></pre>
+<p>Hopefully, the fact that data should be <em>derived</em> is apparent. If we were to modify component state while rendering, we would inadvertently queue re-render side-effects, potentially leading to infinite loops.</p>
+<h2 id="the-big-picture"><a class="header" href="#the-big-picture">The Big Picture</a></h2>
+<p>These three pillars are essential to "thinking reactively" - a mindset required to understand the future chapters. By combining just a few primitives, we have a sophisticated reactivity system that automatically handles changes in our app's state.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../essentials/basics/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../essentials/basics/hooks.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../essentials/basics/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../essentials/basics/hooks.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+        <script>
+            window.playground_line_numbers = true;
+        </script>
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../../ace.js"></script>
+        <script src="../../mode-rust.js"></script>
+        <script src="../../editor.js"></script>
+        <script src="../../theme-dawn.js"></script>
+        <script src="../../theme-tomorrow_night.js"></script>
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>
