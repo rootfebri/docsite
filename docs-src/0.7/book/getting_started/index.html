@@ -1,0 +1,339 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Getting Started</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/DioxusLabs/dioxus/edit/main/docs/guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/DioxusLabs/dioxus/edit/main/docs/guide/src/getting_started/index.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
+<h2 id="pick-an-editor"><a class="header" href="#pick-an-editor">Pick an Editor</a></h2>
+<p>We recommend using <a href="https://code.visualstudio.com">VSCode</a> since Dioxus ships with its <a href="https://marketplace.visualstudio.com/items?itemName=DioxusLabs.dioxus">own VSCode extension</a>. Our build tool <code>dx</code> is standalone and is meant to be used through a terminal.</p>
+<p>Most editors support the <a href="https://rust-analyzer.github.io">Rust-Analyzer LSP plugin</a> which provides appropriate syntax highlighting, code navigation, folding, and more. You can follow the <a href="https://rust-analyzer.github.io/manual.html#installation">installation instructions</a> for your editor of choice: <a href="https://rust-analyzer.github.io/manual.html#vs-code">VSCode</a>, <a href="https://rust-analyzer.github.io/manual.html#zed">Zed</a>, <a href="https://rust-analyzer.github.io/manual.html#emacs">Emacs</a>, or <a href="https://rust-analyzer.github.io/manual.html#vimneovim">Vim</a>.</p>
+<h2 id="install-rust"><a class="header" href="#install-rust">Install Rust</a></h2>
+<p>Head over to <a href="http://rust-lang.org">https://rust-lang.org</a> and install the Rust compiler (preferably using <code>rustup</code>). Once installed, make sure you add the <code>stable</code> toolchain and any relevant toolchains (ie wasm32-unknown-unknown for web apps):</p>
+<pre><code class="language-sh">rustup toolchain install stable
+rustup target add wasm32-unknown-unknown
+</code></pre>
+<p>We strongly recommend going through the <a href="https://doc.rust-lang.org/book/ch01-00-getting-started.html">official Rust book</a> <em>completely</em>. However, we hope that a Dioxus app can serve as a great first Rust project.</p>
+<p>We've put a lot of care into making Dioxus syntax familiar and easy to understand, so you won't need deep knowledge of async, lifetimes, or smart pointers until you start building complex Dioxus apps.</p>
+<h2 id="install-the-dioxus-cli"><a class="header" href="#install-the-dioxus-cli">Install the Dioxus CLI</a></h2>
+<p>Dioxus ships with its own build tool that leverages <code>cargo</code> to provide integrated hot-reloading, bundling, and development servers for web and mobile. You can download the prebuilt binary with the following command:</p>
+<pre><code class="language-sh">curl -sSL http://dioxus.dev/install.sh | sh
+</code></pre>
+<p>You can also download with <code>cargo-binstall</code>:</p>
+<pre><code class="language-sh">cargo binstall dioxus-cli --force
+</code></pre>
+<p>If you want to build the CLI from source, you can install it with the following command:</p>
+<pre><code class="language-sh">cargo install dioxus-cli
+</code></pre>
+<blockquote>
+<p>📣 Installing from source can take up to 10 minutes and requires several dependencies. We <em>strongly</em> recommend downloading the prebuilt binaries.</p>
+</blockquote>
+<p>If you get an OpenSSL error on installation, ensure the dependencies listed <a href="https://docs.rs/openssl/latest/openssl/#automatic">here</a> are installed.</p>
+<h2 id="platform-specific-dependencies"><a class="header" href="#platform-specific-dependencies">Platform-specific dependencies</a></h2>
+<p>Most platforms don't require any additional dependencies, but if you are targeting desktop, you might need to install additional dependencies.</p>
+<p>You can use the <code>dx doctor</code> command to see if <code>dx</code> can properly understand your install. This command helps provide insight into missing toolchains and tools required for cross-platform development.</p>
+<h3 id="macos"><a class="header" href="#macos">macOS</a></h3>
+<p>There are no extra dependencies for macOS! However, if you want to build iOS apps, read the <a href="#ios">iOS section</a> below.</p>
+<h3 id="windows"><a class="header" href="#windows">Windows</a></h3>
+<p>Windows apps depend on WebView2 – a library that should be installed in all modern Windows distributions.</p>
+<p>If you have Edge installed, then Dioxus will work fine. If you <em>don't</em> have WebView2, then you can <a href="https://developer.microsoft.com/en-us/microsoft-edge/webview2/">install it through Microsoft</a>. Microsoft provides 3 options:</p>
+<ol>
+<li>A tiny "evergreen" <em>bootstrapper</em> that fetches an installer from Microsoft's CDN.</li>
+<li>A tiny <em>installer</em> that fetches WebView2 from Microsoft's CDN.</li>
+<li>A statically linked version of WebView2 in your final binary for offline users.</li>
+</ol>
+<p>We recommend using Option 1.</p>
+<h3 id="linux"><a class="header" href="#linux">Linux</a></h3>
+<p>WebView Linux apps require WebkitGtk and xdotool. When distributing, these should be part of your dependency tree in your <code>.rpm</code> or <code>.deb</code>.</p>
+<p>If you run into issues, make sure you have all the basics installed.</p>
+<p>For Ubuntu, make sure everything is installed:</p>
+<pre><code class="language-sh">sudo apt update
+sudo apt install libwebkit2gtk-4.1-dev \
+  build-essential \
+  curl \
+  wget \
+  file \
+  libxdo-dev \
+  libssl-dev \
+  libayatana-appindicator3-dev \
+  librsvg2-dev
+</code></pre>
+<p>For arch:</p>
+<pre><code class="language-sh">sudo pacman -Syu
+sudo pacman -S --needed \
+  webkit2gtk-4.1 \
+  base-devel \
+  curl \
+  wget \
+  file \
+  openssl \
+  appmenu-gtk-module \
+  libappindicator-gtk3 \
+  librsvg \
+  xdotool
+</code></pre>
+<p>For all other Linux targets, <a href="https://tauri.app/start/prerequisites/#linux">check the Tauri docs which cover the same dependencies</a>.</p>
+<p>In addition to the Tauri docs, for Fedora:</p>
+<pre><code class="language-sh">sudo dnf install libxdo-devel
+</code></pre>
+<h3 id="wsl"><a class="header" href="#wsl">WSL</a></h3>
+<p>While doable, it can be tricky to setup development in WSL for Dioxus desktop. Not everything has been figured out and some stuff may not work.</p>
+<p>Here are the steps we used to get Dioxus running through WSL:</p>
+<ol>
+<li>Update your kernel to the latest version and update WSL to version 2.</li>
+<li>Add <code>export DISPLAY=:0</code> to <code>~/.zshrc</code></li>
+<li>Install Tauri's Linux dependencies found <a href="https://beta.tauri.app/start/prerequisites/">here</a>.</li>
+<li>For file dialogs to work, you need to install a fallback like <code>zenity</code></li>
+</ol>
+<p>When running Dioxus desktop on WSL, you may get warnings from <code>libEGL</code>. There is currently no way to silence these, but the app should still render.</p>
+<h3 id="ios"><a class="header" href="#ios">iOS</a></h3>
+<p>Building iOS apps requires a device running macOS with XCode installed.</p>
+<p>Download and install XCode from one of the following places:</p>
+<ul>
+<li><a href="https://apps.apple.com/gb/app/xcode/id497799835?mt=12">Mac App Store</a></li>
+<li><a href="https://developer.apple.com/xcode/resources/">Apple Developer website</a></li>
+</ul>
+<p>You will need to download the iOS SDK and install some simulators.</p>
+<p>For more details, we recommend reading the <a href="../guides/platforms/mobile.html">dedicated guide for iOS development</a>.</p>
+<h3 id="android"><a class="header" href="#android">Android</a></h3>
+<p>Android apps require the Android SDK and NDK to be installed. This can be a substantial amount of setup, so we recommend reading the <a href="../guides/platforms/mobile.html">dedicated guide for Android development</a>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../tutorial/overview.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../tutorial/overview.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+        <script>
+            window.playground_line_numbers = true;
+        </script>
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js"></script>
+        <script src="../mode-rust.js"></script>
+        <script src="../editor.js"></script>
+        <script src="../theme-dawn.js"></script>
+        <script src="../theme-tomorrow_night.js"></script>
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

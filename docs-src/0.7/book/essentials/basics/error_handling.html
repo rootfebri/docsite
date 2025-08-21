@@ -1,0 +1,308 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Error Handling</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/DioxusLabs/dioxus/edit/main/docs/guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/DioxusLabs/dioxus/edit/main/docs/guide/src/essentials/basics/error_handling.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="error-handling"><a class="header" href="#error-handling">Error handling</a></h1>
+<p>A major selling point of using Rust for web development its renowned reliability. A common sentiment by developers deploying Rust services:</p>
+<blockquote>
+<p>"We deployed our Rust service and then forgot about it because it just kept running without any issues"</p>
+</blockquote>
+<p>Rust provides developers powerful tools to track where errors occur and easy ways to handle them. Similarly, in Dioxus, we provide additional tools like early returns, a special RenderError type, and ErrorBoundaries to help you handle errors in a declarative way.</p>
+<h2 id="returning-errors-from-components"><a class="header" href="#returning-errors-from-components">Returning Errors from Components</a></h2>
+<p>Recall that Dioxus components are functions that take props and return an <code>Element</code>. Astute observers might recognize that the <code>Element</code> type is actually a type alias for <code>Result&lt;VNode, RenderError&gt;</code>!</p>
+<p>The <code>RenderError</code> type can be created from an error type that implements <code>Error</code>. You can use <code>?</code> to bubble up any errors you encounter while rendering to the nearest error boundary:</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/error_handling.rs:throw_error}}</code></pre>
+<p>The <a href="https://docs.rs/anyhow/latest/anyhow/"><code>RenderError</code></a> is very similar to the crate <code>anyhow</code>'s error type. Unlike anyhow's error type, the <code>RenderError</code> lets you attach additional Dioxus-specific metadata when throwing errors.</p>
+<h2 id="capturing-errors-with-errorboundaries"><a class="header" href="#capturing-errors-with-errorboundaries">Capturing errors with ErrorBoundaries</a></h2>
+<p>In JavaScript, you might have used <code>try</code> and <code>catch</code> to throw and catch errors in your code:</p>
+<pre><code class="language-js">try {
+    // Some code that might throw an error
+    let result = riskyOperation();
+    console.log(result);
+} catch (error) {
+    // Handle the error
+    console.error("Something went wrong:", error.message);
+}
+</code></pre>
+<p>In Dioxus, you can take a similar try/catch approach within the component tree with error boundaries. Error boundaries let us catch and handle errors produced while rendering our app.</p>
+<p><a href="/assets/07/error-boundaries.png">Error Boundaries</a></p>
+<p>When you return an error from a component, it gets thrown to the nearest error boundary. That error boundary can then handle the error and render a fallback UI with the handle_error closure:</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/error_handling.rs:capture_error}}</code></pre>
+<h2 id="throwing-errors-from-event-handlers"><a class="header" href="#throwing-errors-from-event-handlers">Throwing Errors from Event Handlers</a></h2>
+<p>In addition to components, you can throw errors from event handlers. If you throw an error from an event handler, it will bubble up to the nearest error boundary just like a component:</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/error_handling.rs:throw_error_event_handler}}</code></pre>
+<p>This is extremely useful when handling async work or work that fails frequently.</p>
+<h2 id="adding-context-to-errors"><a class="header" href="#adding-context-to-errors">Adding context to errors</a></h2>
+<p>You can add additional context to your errors with the <a href="https://docs.rs/dioxus/0.6/dioxus/prelude/trait.Context.html"><code>Context</code></a> trait. Calling <code>context</code> on a <code>Result</code> will add the context to the error variant of the <code>Result</code>:</p>
+<pre><code class="language-rust  no_run">{{#include ../docs-router/src/doc_examples/error_handling.rs:add_context}}</code></pre>
+<p>If you need some custom UI for the error message, you can call <code>show</code> on a result to attach an Element to the error variant. The parent error boundary can choose to render this element instead of the default error message:</p>
+<pre><code class="language-rust  no_run">{{#include ../docs-router/src/doc_examples/error_handling.rs:show}}</code></pre>
+<h2 id="downcasting-specific-errors"><a class="header" href="#downcasting-specific-errors">Downcasting Specific Errors</a></h2>
+<p>When handling errors in Error Boundaries, we can match on specific types of errors, optionally choosing to capture the error and prevent it from bubbling.</p>
+<p>By default, errors are caught by the nearest Error Boundary. In some scenarios, we might not want to catch a specific type of error, like a NetworkError.</p>
+<p>In our handler code, we can iterate through the list of captured errors with <code>.errors()</code> and then re-throw the error if necessary:</p>
+<pre><code class="language-rust">rsx! {
+    ErrorBoundary {
+        handle_error: |errors: ErrorContext| {
+            // Network errors need to be handled by a different error boundary!
+            if let Err(e) = errors.errors().iter().find(|s| s.downcast::&lt;NetworkError&gt;().is_some()) {
+                return Err(e.into())
+            }
+
+            // Otherwise, handle this error here
+            rsx! {
+                div { "Oops, we encountered an error" }
+            }
+        },
+        // ...
+    }
+}</code></pre>
+<h2 id="local-error-handling"><a class="header" href="#local-error-handling">Local Error Handling</a></h2>
+<p>If you need more fine-grained control over error states, you can store errors in reactive hooks and use them just like any other value. For example, if you need to show a phone number validation error, you can store the error in a memo and show it below the input field if it is invalid:</p>
+<pre><code class="language-rust  no_run">{{#include ../docs-router/src/doc_examples/error_handling.rs:phone_number_validation}}</code></pre>
+<pre><code class="language-inject-dioxus">DemoFrame {
+    error_handling::PhoneNumberValidation {}
+}
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../essentials/basics/collections.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../essentials/advanced/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../essentials/basics/collections.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../essentials/advanced/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+        <script>
+            window.playground_line_numbers = true;
+        </script>
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../../ace.js"></script>
+        <script src="../../mode-rust.js"></script>
+        <script src="../../editor.js"></script>
+        <script src="../../theme-dawn.js"></script>
+        <script src="../../theme-tomorrow_night.js"></script>
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

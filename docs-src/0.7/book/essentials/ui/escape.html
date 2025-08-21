@@ -1,0 +1,382 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Escape Hatches</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/DioxusLabs/dioxus/edit/main/docs/guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/DioxusLabs/dioxus/edit/main/docs/guide/src/essentials/ui/escape.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="escaping-rsx"><a class="header" href="#escaping-rsx">Escaping RSX</a></h1>
+<p>While RSX is extremely capable, <em>some</em> changes to the UI require low-level access to system widgets or an imperative programming approach. Dioxus provides a number of "escape hatches," letting you use alternative UI techniques that don't fit into the declarative RSX paradigm. Also, Dioxus is relatively young and might not expose support for <em>every</em> feature the platform-specific renderer has.</p>
+<h2 id="custom-element-attributes"><a class="header" href="#custom-element-attributes">Custom Element Attributes</a></h2>
+<p>Under the hood, Dioxus declares every element attribute as a set of constants that describe the attribute's static properties. The definition is roughly equivalent to this pseudocode:</p>
+<pre><code class="language-rust">struct video;
+impl video {
+    const src: AttributeDefinition = AttributeDefinition {
+        name: "src",
+        namespace: None,
+        type: String
+    };
+    const autoplay: AttributeDefinition = AttributeDefinition {
+        name: "controls",
+        namespace: None,
+        type: Boolean
+    };
+}
+
+//
+rsx! {
+    video { src: "...", autoplay: true }
+}</code></pre>
+<p>In some cases, an attribute declaration might be missing, or you need to use a custom name. RSX enables this with quote-wrapped attribute names. Simply wrap the name of the custom attribute with quotes and pass in any expression that evalutes to <code>IntoAttributeValue</code>:</p>
+<pre><code class="language-rust">rsx! {
+    div {
+        "data-my-button-id": 123
+    }
+}</code></pre>
+<p>Custom attributes can be extremely handy when using data attributes and custom CSS selectors.</p>
+<h2 id="dangerous-inner-html"><a class="header" href="#dangerous-inner-html">Dangerous Inner HTML</a></h2>
+<p>If you're working with pre-rendered assets, output from templates, or output from a JS library, then you might want to pass HTML directly instead of going through Dioxus. In these instances, reach for <code>dangerous_inner_html</code>. This attribute sets the HTML <code>textContent</code> field of the element to the provided value. This will overwrite any other attributes or children of the element.</p>
+<p>For example, shipping a markdown-to-Dioxus converter might significantly bloat your final application size. Instead, you'll want to pre-render your markdown to HTML and then include the HTML directly in your output. We use this approach for the <a href="https://dioxuslabs.com">Dioxus homepage</a>:</p>
+<pre><code class="language-rust  no_run">{{#include ../docs-router/src/doc_examples/dangerous_inner_html.rs:dangerous_inner_html}}</code></pre>
+<pre><code class="language-inject-dioxus">DemoFrame {
+	dangerous_inner_html::App {}
+}
+</code></pre>
+<blockquote>
+<p>Note! This attribute is called "dangerous_inner_html" because it is <strong>dangerous</strong> to pass it data you don't trust. If you're not careful, you can easily expose <a href="https://en.wikipedia.org/wiki/Cross-site_scripting">cross-site scripting (XSS)</a> attacks to your users.</p>
+<p>If you're handling untrusted input, make sure to sanitize your HTML before passing it into <code>dangerous_inner_html</code> – or just pass it to a Text Element to escape any HTML tags.</p>
+</blockquote>
+<h2 id="web-components"><a class="header" href="#web-components">Web Components</a></h2>
+<p>While we generally suggest creating new components directly in Dioxus, a 3rd-party component might be distributed as a <a href="https://www.webcomponents.org"><em>Web Component</em></a>. Web components provide a framework-agnostic way of building and distributing custom HTML elements.</p>
+<p>Any element with a dash in the name is a web component. Web components are rendered directly in dioxus without type checking. Generally, you'll be importing a web component <em>into</em> Dioxus. We therefore recommend wrapping web components in a type safe component to make them easier to use.</p>
+<pre><code class="language-rust  no_run">{{#include ../docs-router/src/doc_examples/building_uis_with_rsx.rs:web_component}}</code></pre>
+<p>Because web components are untyped, they have no default attributes. Each attribute name must be wrapped in quotes, hence why we suggest wrapping the web component in a Dioxus component:</p>
+<pre><code class="language-rust">// our dioxus component provides a strongly-typed wrapper around our stringly-typed web component
+#[component]
+fn MyWebComponent(name: String, age: i32) -&gt; Element {
+    rsx! {
+        my-web-component {
+            "name": "hello, {name}",
+            "age": age + 10
+        }
+    }
+}</code></pre>
+<h2 id="direct-dom-access"><a class="header" href="#direct-dom-access">Direct DOM Access</a></h2>
+<p>As mentioned earlier, RSX is <em>declarative.</em> You compose your elements in an <code>rsx! {}</code> block and Dioxus does the rendering. Sometimes, you'll need lower-level access to DOM elements to build deeply interactive UI. This might involve rendering into a canvas element or performing a synchronous modification to an element's properties.</p>
+<p>To get direct access to the underlying <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction">HTML DOM</a>, Dioxus provides a few built-in mechanisms:</p>
+<ul>
+<li>Running JavaScript through <code>eval</code></li>
+<li>Using <a href="https://docs.rs/web-sys/latest/web_sys/"><code>web-sys</code></a> to get element by ID</li>
+<li>Using the <code>onmounted</code> event handler</li>
+<li>Using the <code>onresize</code> and <code>onvisible</code> events</li>
+</ul>
+<h3 id="eval"><a class="header" href="#eval">Eval</a></h3>
+<p>Dioxus exposes an <code>eval</code> function that allows you to evaluate arbitary JavaScript in the platform renderer. On the web, this uses <a href="https://docs.rs/web-sys/latest/web_sys/"><code>web-sys</code></a>, and for the webview renderer, this uses the webview's native <code>eval</code> method.</p>
+<p>You can eval any valid JavaScript. Dioxus transforms the input source code into a <code>Function</code> declaration and then allows you to capture its result. To send custom data into JavaScript, we simply format the source code. To return data from JavaScript, we use <code>dioxus.send()</code> and the eval's <code>.recv()</code> method:</p>
+<pre><code class="language-rust">use dioxus::prelude::*;
+
+fn app() -&gt; Element {
+    rsx! {
+        button {
+            onclick: move |_| async move {
+                // You can send values from rust to the JavaScript code by using the `send` method on the object returned by `eval`.
+                let mut eval = document::eval(
+                    r#"for(let i = 0; i &lt; 10; i++) {
+                        // You can send values asynchronously with the `dioxus.send()` method.
+                        dioxus.send(i);
+                    }"#
+                );
+
+                // You can receive values from the JavaScript code with the `recv` method on the object returned by `eval`.
+                for _ in 0..10 {
+                    let value: i32 = eval.recv().await.unwrap();
+                    println!("Received {}", value);
+                }
+            },
+            "Log Count"
+        }
+    }
+}</code></pre>
+<h3 id="using-web-sys-and-event-downcasting"><a class="header" href="#using-web-sys-and-event-downcasting">Using <code>web-sys</code> and Event Downcasting</a></h3>
+<p>On the web, it's possible to use the <a href="https://docs.rs/web-sys/latest/web_sys/"><code>web-sys</code></a> crate to directly call JavaScript methods from Rust. This uses foreign-function-interfaces to bridge the gap between Rust and JavaScript. We don't necessarily suggest using web-sys in <em>all</em> cases since web-sys is currently not portable to the Dioxus Desktop and Mobile renderers.</p>
+<p>With web-sys, we can call most JavaScript methods with a strongly-typed Rust interface:</p>
+<pre><code>rsx! {
+    let alert_it = move |_| {
+        let window = web_sys::window().unwrap();
+        window.alert_with_message("Hello from Rust!");
+    };
+    button { onclick: alert_it, "Click to alert" }
+}
+</code></pre>
+<p>If you <em>need</em> to use web-sys on desktop and mobile, you might want to use <a href="#using-dioxus-in-tauri">Dioxus with Tauri</a> instead.</p>
+<h3 id="using-getelementbyid"><a class="header" href="#using-getelementbyid">Using <code>getElementById</code></a></h3>
+<p>When using either eval or web_sys, it can be useful to get a direct handle to an HTML Dom Node. Generally, we suggest creating an ID for a given element, and then using <code>getElementById</code> to reference that node later.</p>
+<pre><code class="language-rust">// Set a unique ID for the div
+let id = use_hook(|| Uuid::new_v4());
+
+// Reference it in our eval logic
+let set_div_contents = move |_| async move {
+    dioxus::document::eval(format!(r#" document.getElementById("{{div-{id}}}").innerText = "one-two-three" "#)).await;
+};
+
+rsx! {
+    // And then assign it on the element itself
+    div { id: "div-{id}" }
+    button { onclick:  set_div_contents, "Set Div Directly" }
+}</code></pre>
+<h2 id="child-windows-and-overlays"><a class="header" href="#child-windows-and-overlays">Child Windows and Overlays</a></h2>
+<p>Some apps require low-level access to the HTML <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/canvas"><code>canvas</code></a> element. For example, computer-aided-design (CAD) apps, video games, photo editors, video editors, or anything relying on lots of multimedia might want to render GUI textures manually.</p>
+<p>When using the webview renderer, you can overlay your Dioxus HTML content <em>on top</em> of a native texture. This is an advanced escape hatch that unlocks the entire rendering pipeline - extremely powerful but also quite complex.</p>
+<p><img src="/assets/06assets/wgpu-windows.mp4" alt="wgpu-windows.mp4" /></p>
+<p>For more information, see the <a href="https://github.com/DioxusLabs/dioxus/blob/main/examples/wgpu_child_window.rs">accompanying example</a>.</p>
+<h2 id="using-dioxus-in-tauri"><a class="header" href="#using-dioxus-in-tauri">Using Dioxus in Tauri</a></h2>
+<p>If you <em>need</em> to use the <code>web-sys</code> crate on desktop and mobile platforms, then <a href="https://tauri.app">Tauri</a> might be useful for you. Tauri is a framework that lets you combine a custom frontend across an IPC boundary with Rust code running natively. This is somewhat similar to Dioxus, but instead of your UI code running natively, it insteads runs as WebAssembly <em>inside</em> the webview. This can be slower and harder to setup, but does enable direct DOM access across all platforms.</p>
+<p>Dioxus-Web is supported as a frontend option when creating a new Tauri app, so make sure to check out <a href="https://tauri.app/start/">their docs</a>.</p>
+<h2 id="native-widgets"><a class="header" href="#native-widgets">Native Widgets</a></h2>
+<p>The first-party Dioxus renderers currently only render HTML and CSS. This is either done via <code>HTMLDomElement</code> with <code>web-sys</code> or through a eval for the webview renderers. Sometimes, you want to render a platform-native widget. Internally, Dioxus uses this to open file dialogs, color pickers, and provide functionality where platform-consistency matters.</p>
+<p><img src="/assets/07/file-upload.png" alt="File Upload Dialog" /></p>
+<p>This is somewhat advanced and requires using FFI into Objective-C and Kotlin to use system libraries. See the <a href="https://crates.io/crates/dioxus-desktop">dioxus-desktop docs</a> for more info.</p>
+<h2 id="dioxus-native"><a class="header" href="#dioxus-native">Dioxus Native</a></h2>
+<p>For <em>complete</em> control over the DOM, we've built the <em>Dioxus Native</em> renderer. This renderer combines platform-native widgets along with a stripped-down HTML/CSS renderer to paint the Dioxus widget tree directly to the screen. Currently, Dioxus Native supports a variety of backends based on the <a href="https://github.com/linebender/vello">Vello</a> crate.</p>
+<p>Dioxus Native is nascent. We specifically built Dioxus Native to paint arbitrary GPU textures into canvas elements. Instead of using child windows and overlays, you can directly pump WGPU textures in HTML elements. Likewise, you can embed Dioxus into any existing WGPU application, like a Bevy game.</p>
+<p><img src="/assets/07/wgpu-native-overlay.mp4" alt="WGPU Native" /></p>
+<p>See the <a href="https://crates.io/crates/dioxus-native">dioxus-native crate</a> for more information.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../essentials/ui/hotreload.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../essentials/basics/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../essentials/ui/hotreload.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../essentials/basics/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+        <script>
+            window.playground_line_numbers = true;
+        </script>
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../../ace.js"></script>
+        <script src="../../mode-rust.js"></script>
+        <script src="../../editor.js"></script>
+        <script src="../../theme-dawn.js"></script>
+        <script src="../../theme-tomorrow_night.js"></script>
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

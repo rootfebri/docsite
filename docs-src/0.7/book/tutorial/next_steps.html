@@ -1,0 +1,313 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Next Steps</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/DioxusLabs/dioxus/edit/main/docs/guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/DioxusLabs/dioxus/edit/main/docs/guide/src/tutorial/next_steps.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="wrapping-up"><a class="header" href="#wrapping-up">Wrapping Up</a></h1>
+<p>Congrats on making it through our <em>HotDog</em> tutorial!</p>
+<p>Hopefully this isn't the end of our journey, but rather, a bold new beginning.</p>
+<h2 id="up-next"><a class="header" href="#up-next">Up Next</a></h2>
+<p>We strongly recommend moving on to the <a href="../essentials/index.html">Essential Topics</a> to become familiar with the important details of Dioxus.</p>
+<p>The essentials section will guide you through key concepts in Dioxus:</p>
+<ul>
+<li>
+<p><a href="../essentials/ui/index.html">Building UIs with RSX</a> will teach you how to define html inside your Dioxus app with rsx.</p>
+</li>
+<li>
+<p><a href="../essentials/basics/index.html">Managing State</a> guides you through how state works in Dioxus. It will teach you how to create state with <code>use_signal</code>, derive state with <code>use_memo</code>, and integrate state with asynchronous tasks with <code>use_resource</code>. Along the way, you will learn about how you can use reactivity to declaratively describe your UI.</p>
+</li>
+<li>
+<p><a href="../essentials/advanced/index.html">Advanced Reactivity</a> teaches you deeper concepts about Dioxus like building custom hooks, optimizing your app, and breaking out of the Dioxus framework.</p>
+</li>
+</ul>
+<h2 id="ideas-for-new-features"><a class="header" href="#ideas-for-new-features">Ideas for New Features</a></h2>
+<p>Challenge yourself by adding new features to <em>HotDog</em>.</p>
+<ul>
+<li>Add animations to your app with CSS or <a href="https://github.com/wheregmis/dioxus-motion">dioxus-motion</a>.</li>
+<li>Style your app with a library like <a href="http://tailwindcss.com">TailwindCSS</a>.</li>
+<li>Add inputs to allow users to upload their own dog photos.</li>
+<li>Make it social! Add login, user accounts, and a feed.</li>
+<li>Remix HotDog for something entirely new.</li>
+</ul>
+<h2 id="faq"><a class="header" href="#faq">FAQ</a></h2>
+<p>You might be curious how particular features work in Dioxus. Let's try to address a few popular question:</p>
+<h3 id="is-dioxus-fast"><a class="header" href="#is-dioxus-fast">Is Dioxus Fast?</a></h3>
+<p>Dioxus is really fast. Dioxus is built around an <em>extremely</em> performant VirtualDom. While a VirtualDom might sound like <a href="https://svelte.dev/blog/virtual-dom-is-pure-overhead">"pure overhead"</a>, Dioxus leverages compile-time optimizations that make it faster than nearly all UI frameworks.</p>
+<p>On the web, Dioxus <a href="https://krausest.github.io/js-framework-benchmark/2023/table_chrome_120.0.6099.62.html">is on par with frameworks like Solid and Svelte</a> which leverage new reactivity models or custom compilers.</p>
+<h3 id="is-rust-too-hard"><a class="header" href="#is-rust-too-hard">Is Rust too hard?</a></h3>
+<p>Rust is a notoriously difficult language to learn, but it's extremely powerful. Dioxus has been designed to use the "easy" parts of Rust. For example, Dioxus primarily uses single-threaded code and avoids complicated generic interfaces.</p>
+<p>All-in-all, the productivity you gain by building once and deploying everywhere usually makes up for the steeper learning curve. Plus, as Dioxus matures, interfaces become easier to use and the ecosystem improves.</p>
+<h3 id="does-dioxus-support-xyz"><a class="header" href="#does-dioxus-support-xyz">Does Dioxus support "xyz"?</a></h3>
+<ul>
+<li>TailwindCSS: Yes, but it requires an additional step, see the <a href="../guides/utilities/tailwind.html">docs for more info</a>.</li>
+<li>Native Widgets: Yes, but you might need to write this code yourself. The Rust ecosystem is young.</li>
+<li>Shadcn-ui: Not yet, a radix-ui port to Dioxus is underway but we're not done yet.</li>
+<li>Actix/Rocket: Yes, kind-of. In Dioxus, Server-Functions are built on axum, but you can use server-side-rendering with any framework.</li>
+<li>Static-site-generation: Yes! The docs are currently under construction, so stay tuned. 🏗️</li>
+<li>Animations: Yes, you can use CSS animations, <a href="https://github.com/wheregmis/dioxus-motion">dioxus-motion</a>, or integrate with the system animation APIs.</li>
+<li>Accessibility: Yes. Use semantic HTML and aria-tags for good screen-reader support.</li>
+<li>WGPU: Yes, kinda. You can overlay Dioxus on a WGPU scene or experiment with Dioxus-Native which renders with WGPU.</li>
+<li>AI: Yes, you can interface with providers like <a href="https://crates.io/crates/openai-api-rs">OpenAI</a> or even <a href="https://github.com/DioxusLabs/dioxus-ai">build your own provider</a>.</li>
+</ul>
+<p>If you have an FAQ not covered here, suggest an edit!</p>
+<h3 id="why-rsx-instead-of-html"><a class="header" href="#why-rsx-instead-of-html">Why RSX instead of HTML?</a></h3>
+<p>If you've seen React's JSX or the <code>html!{}</code> Rust macro, you might be curious as to why Dioxus chose to use its own syntax instead of a syntax that looks more similar to HTML.</p>
+<p>A few reasons:</p>
+<ul>
+<li>RSX gets token coloring and code-folding without additional tooling</li>
+<li>RSX is faster to type since curly braces are auto-closed</li>
+<li>Not all RSX is HTML - Dioxus can be used in non-HTML contexts</li>
+<li>HTML is not valid Rust - not all HTML can be used in html!{}</li>
+</ul>
+<p>We want the out-of-the-box experience for Dioxus to be great without setting up any custom tooling.</p>
+<p>The Dioxus <a href="http://marketplace.visualstudio.com/items?itemName=DioxusLabs.dioxus">VSCode Extension</a> can convert HTML to RSX as well as the CLI with <code>dx translate</code>.</p>
+<h3 id="should-i-use-dioxus-or-tauri-or-leptos-or-iced-or"><a class="header" href="#should-i-use-dioxus-or-tauri-or-leptos-or-iced-or">Should I use Dioxus or Tauri or Leptos or Iced or...?</a></h3>
+<p>There's a budding ecosystem of Rust projects for building apps and websites! We have a good comparison in our <a href="https://github.com/DioxusLabs/dioxus#dioxus-vs-other-frameworks">Readme.md</a></p>
+<p>Dioxus is an "all-in-one" solution for building apps with Rust. We try to be helpful every step of the way: getting started, iterating, testing, bundling, and deploying.</p>
+<ul>
+<li><strong>Tauri</strong>: You can use Dioxus with Tauri, but we focus primarily on the standalone Dioxus experience. Tauri is a good choice if you want to use a JavaScript frontend or need full-featured access to the Webview DOM.</li>
+<li><strong>Leptos</strong>: Dioxus and Leptos are both good choices for fullstack web development with differences in syntax and reactivity models. Dioxus is architected to support desktop and mobile "1st-class" whereas Leptos is primarily a web framework.</li>
+<li><strong>Iced:</strong> Iced is GUI framework that renders using its own render engine, making it highly customizable. Iced is a good choice for apps that need access to lower-level rendering through WGPU. Dioxus will be releasing its own WGPU renderer in early 2025, so stay tuned!</li>
+</ul>
+<p>Dioxus is quite a large project and has been a bit slower to mature than other projects with larger development teams or smaller scopes. With 0.6, Dioxus is more mature but still has some ground to cover.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../tutorial/deploy.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../essentials/overview.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../tutorial/deploy.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../essentials/overview.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+        <script>
+            window.playground_line_numbers = true;
+        </script>
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js"></script>
+        <script src="../mode-rust.js"></script>
+        <script src="../editor.js"></script>
+        <script src="../theme-dawn.js"></script>
+        <script src="../theme-tomorrow_night.js"></script>
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

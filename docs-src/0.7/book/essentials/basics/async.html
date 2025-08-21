@@ -1,0 +1,333 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Async and Futures</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/DioxusLabs/dioxus/edit/main/docs/guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/DioxusLabs/dioxus/edit/main/docs/guide/src/essentials/basics/async.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="async-and-futures"><a class="header" href="#async-and-futures">Async and Futures</a></h1>
+<p>Not all actions complete immediately. Some actions, like a network request, require waiting for system input/output (IO). While waiting for network response, we want to provide status updates, add a loading spinner, and most importantly: avoid blocking the UI thread. Code that blocks the UI thread will prevent further user input, making the UI feel janky and unintuitive.</p>
+<p>Rust provides a built-in way of handling asynchronous work with its built-in async/await system. Dioxus provides a first-class integration with Rust's async/await system.</p>
+<h2 id="future-rusts-async-primitive"><a class="header" href="#future-rusts-async-primitive">Future: Rust's Async Primitive</a></h2>
+<p>The <code>Future</code> trait is the core of async Rust. A future represents a value that may not yet be ready. In other languages, this is sometimes called a <em>Promise</em> or <em>Task</em>. You can read more about Futures in the <a href="https://doc.rust-lang.org/book/ch17-00-async-await.html">Rust book</a>.</p>
+<p>We won't cover all the details of futures here, but there are a few important things to know before using them in Dioxus:</p>
+<ul>
+<li><strong>Futures are lazy</strong>: They do not do anything until you <code>await</code> them or <code>spawn</code> them.</li>
+<li><strong>Futures are concurrent but not always parallel</strong>: In Dioxus, all futures run on the main thread.</li>
+<li><strong>Futures pause at await points</strong>: You should not hold any locks across those await points.</li>
+<li><strong>Futures can be cancelled before they complete</strong>: Your futures need to be "cancel safe."</li>
+</ul>
+<p>Futures should be able to handle stopping at any time without panicking or leaving the application in an inconsistent state. They should also be careful not to run blocking operations that lock the main thread.</p>
+<p>The lifecycle of a future follows a consistent structure:</p>
+<ul>
+<li>A callback calls an <code>async fn</code> or an async closure</li>
+<li>The async function returns a Future</li>
+<li>A <code>dioxus::spawn()</code> call submits the future to the Dioxus runtime, returning a <code>Task</code></li>
+<li>The Future is polled in the background until it returns a <code>Ready</code> value</li>
+<li>If the Future is cancelled, Rust calls its <code>Drop</code> implementation</li>
+</ul>
+<p><img src="/assets/07/future-diagram.png" alt="Future Diagram" /></p>
+<h2 id="lazy-futures"><a class="header" href="#lazy-futures">Lazy futures</a></h2>
+<p>Unlike JavaScript's Promises, Rust futures are <em>lazy</em>. This means that they do not start executing until you call <code>.await</code> or start them in the background with <code>spawn</code>.</p>
+<p>This Future will never log "Ran" because it is never awaited:</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/async_crash_course.rs:async_block}}</code></pre>
+<p>To run this Future, you can either await it in another Future or spawn it:</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/async_crash_course.rs:await}}</code></pre>
+<p>You can stop polling a Future any time or customize how a Future is polled using the <a href="https://crates.io/crates/futures">futures</a> crate.</p>
+<h2 id="running-futures-with-spawn"><a class="header" href="#running-futures-with-spawn">Running Futures with <code>spawn</code></a></h2>
+<p>The Dioxus <a href="https://docs.rs/dioxus/0.7/dioxus/prelude/fn.spawn.html"><code>spawn</code></a> function starts running a Future in the background and returns a <code>Task</code> that you can use to control the Future. It is the basis of all other async hooks in dioxus. You can use spawn to execute one-off tasks in event handlers, hooks or other Futures:</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/asynchronous.rs:spawn}}</code></pre>
+<pre><code class="language-inject-dioxus">DemoFrame {
+    asynchronous::SpawnButton {}
+}
+</code></pre>
+<p>Since spawning in event handlers is very common, Dioxus provides a more concise syntax. If you return a Future from an event handler, Dioxus will automatically <code>spawn</code> it:</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/asynchronous.rs:spawn_simplified}}</code></pre>
+<h2 id="automatic-cancellation"><a class="header" href="#automatic-cancellation">Automatic Cancellation</a></h2>
+<p>The Future you pass to the <code>spawn</code> will automatically be cancelled when the component is unmounted. If you need to keep the Future running until it is finished, you can use <a href="https://docs.rs/dioxus/0.7/dioxus/prelude/fn.spawn_forever.html"><code>spawn_forever</code></a> instead:</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/asynchronous.rs:spawn_forever}}</code></pre>
+<h2 id="manual-cancellation"><a class="header" href="#manual-cancellation">Manual Cancellation</a></h2>
+<p>If you want to cancel your future manually, you can call the <code>cancel</code> method on the <code>Task</code> returned by <code>spawn</code> or <code>spawn_forever</code>. This will stop the future from running and drop it.</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/asynchronous.rs:cancel_button}}</code></pre>
+<pre><code class="language-inject-dioxus">DemoFrame {
+    asynchronous::CancelButton {}
+}
+</code></pre>
+<h2 id="cancel-safety"><a class="header" href="#cancel-safety">Cancel Safety</a></h2>
+<p>Async tasks can be cancelled at any time. The futures you spawn in dioxus may be canceled:</p>
+<ol>
+<li>When the component they were spawned in is unmounted.</li>
+<li>When the task is cancelled manually using the <code>cancel</code> method on the <code>Task</code> returned by <code>spawn</code> or <code>spawn_forever</code>.</li>
+<li>When a resource restarts</li>
+</ol>
+<p>This means that your futures need to be cancel safe. A cancel-safe future is one that can be stopped at any await point without causing issues. For example, if you are using a global state, you need to ensure that the state is restored when the future is dropped:</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/asynchronous.rs:not_cancel_safe}}</code></pre>
+<pre><code class="language-inject-dioxus">DemoFrame {
+    asynchronous::NotCancelSafe {}
+}
+</code></pre>
+<p>You can mitigate issues with cancellation by cleaning up resources manually. For example, by making sure global state is restored when the future is dropped:</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/asynchronous.rs:cancel_safe}}</code></pre>
+<pre><code class="language-inject-dioxus">DemoFrame {
+    asynchronous::CancelSafe {}
+}
+</code></pre>
+<p>Async methods will often mention if they are cancel safe in their documentation. Generally, most futures you'll encounter when building Dioxus apps <em>are</em> cancel safe.</p>
+<h2 id="concurrency-vs-parallelism"><a class="header" href="#concurrency-vs-parallelism">Concurrency vs Parallelism</a></h2>
+<p>Concurrency and parallelism are often confused, but the difference has important implications for how you write your applications. Multiple concurrent tasks may be in progress at the same time, but they don't necessarily run at the same time. In Rust, futures are concurrent. They can yield control to other tasks at await points, allowing other tasks to run while they wait for a value to become ready.</p>
+<p><img src="/assets/07/async_concurrent.png" alt="concurrent" /></p>
+<p>In contrast, multiple parallel tasks can run at exactly the same time on different threads. In Rust, you can spawn parallel tasks using the <code>std::thread</code> module or libraries like <code>rayon</code>.</p>
+<p><img src="/assets/07/async_parallel.png" alt="parallel" /></p>
+<p>Rust has multiple different async runtimes like <code>tokio</code> or <code>wasm-bindgen-futures</code>. Dioxus provides its own async runtime built on top of a platform specific runtime for each renderer. On desktop and mobile, we use Tokio to progress futures.</p>
+<p>The Dioxus runtime is single threaded which means futures can use <code>!Send</code> types, but they need to be careful to never block the thread.</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/async_crash_course.rs:blocking}}</code></pre>
+<p>If you have an expensive task you need to run, you should spawn it on a separate thread using <a href="https://doc.rust-lang.org/std/thread/fn.spawn.html"><code>std::thread::spawn</code></a> on desktop/mobile or use a <a href="https://docs.rs/gloo-worker/latest/gloo_worker/">web worker</a> on the web. This will allow the main thread to continue running and keep the UI responsive.</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/async_crash_course.rs:thread}}</code></pre>
+<h2 id="handling-locks"><a class="header" href="#handling-locks">Handling locks</a></h2>
+<p>Futures will pause execution at <code>.await</code> points, allowing other tasks to run until the future is ready to continue. You should never hold <code>read</code>/<code>write</code> locks across <code>.await</code> points because another async task could try to use the value while the future is paused and the lock is still open. Instead, you need to ensure that locks are only held for the duration of the critical section and released before awaiting.</p>
+<p><img src="/assets/07/async_lock_await.png" alt="async locks" /></p>
+<h2 id="long-lived-futures"><a class="header" href="#long-lived-futures">Long-lived Futures</a></h2>
+<p>In some apps, you might want to include long-lived tasks that exist for the lifetime of the app. This might be a background sync engine or a thread listening to some system IO. For these use cases, we provide the <code>spawn_forever</code> function. This works exactly the same as <code>spawn</code>, but instead of spawning the future under the <em>current</em> component, the future is attached to the <em>root</em> component. Because the root component is never unmounted, the task continues until the app is closed.</p>
+<pre><code class="language-rust">use_hook(|| spawn_forever(async move {
+    println!("Starting a background task!");
+}));</code></pre>
+<p>This function does have its drawbacks and is meant for advanced use cases. If any resources like a Signal are used in this future, they must <em>also</em> be valid for the lifetime of the app. Using Signals after they have been dropped will lead to a panic and crash your app!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../essentials/basics/event_handlers.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../essentials/basics/resources.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../essentials/basics/event_handlers.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../essentials/basics/resources.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+        <script>
+            window.playground_line_numbers = true;
+        </script>
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../../ace.js"></script>
+        <script src="../../mode-rust.js"></script>
+        <script src="../../editor.js"></script>
+        <script src="../../theme-dawn.js"></script>
+        <script src="../../theme-tomorrow_night.js"></script>
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

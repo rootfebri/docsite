@@ -1,0 +1,339 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Routing and Structure</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/DioxusLabs/dioxus/edit/main/docs/guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/DioxusLabs/dioxus/edit/main/docs/guide/src/tutorial/routing.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="adding-more-routes"><a class="header" href="#adding-more-routes">Adding More Routes</a></h1>
+<p>So far, our app has only had a single page. Let's change that!</p>
+<p>In this chapter, we'll be adding a Navbar, a welcome screen, and a "favorites" page where we can revisit our favorite dogs.</p>
+<h2 id="organizing-our-project"><a class="header" href="#organizing-our-project">Organizing our Project</a></h2>
+<p>Before we get too far with adding new pages to our app, let's organize our codebase a bit better. For larger projects you might want to break your app into different smaller crates. For HotDog, we'll keep it simple.</p>
+<blockquote>
+<p>The <code>dx new</code> Jumpstart and Workspace templates provide great scaffolding for new apps!</p>
+</blockquote>
+<p>We generally recommend splitting your components, models, and backend functionality into different files. For HotDog, we're going to use a simple directory structure:</p>
+<pre><code class="language-sh">├── Cargo.toml
+├── assets
+│   └── main.css
+└── src
+    ├── backend.rs
+    ├── components
+    │   ├── favorites.rs
+    │   ├── mod.rs
+    │   ├── nav.rs
+    │   └── view.rs
+    └── main.rs
+</code></pre>
+<p>We'll have a <code>backend.rs</code> that contains our server functions and a <code>components</code> folder that contains our components. We don't have a <code>NavBar</code> or a <code>Favorites</code> component yet, but we'll still create the relevant files before adding them. By splitting out our server functions into a <code>backend.rs</code> file, we'll make it easier to extract our backend functionality as a shared library for different apps in the future.</p>
+<p>Our <code>components/mod.rs</code> file will simply import and re-export the components in <code>view.rs</code>, <code>nav.rs</code>, and <code>favorites.rs</code>:</p>
+<pre><code class="language-rust">mod favorites;
+mod nav;
+mod view;
+
+pub use favorites::*;
+pub use nav::*;
+pub use view::*;</code></pre>
+<p>Finally, we need to bring <code>backend</code> and <code>components</code> into scope in our <code>main.rs</code> file:</p>
+<pre><code class="language-rust">mod components;
+mod backend;
+
+use crate::components::*;</code></pre>
+<p>For more information on organizing Rust projects with modules, see the <a href="https://doc.rust-lang.org/book/ch07-02-defining-modules-to-control-scope-and-privacy.html">Modules section</a> of the Rust Book.</p>
+<h2 id="creating-a-route"><a class="header" href="#creating-a-route">Creating a Route</a></h2>
+<p>Most Dioxus apps you'll build will have different screens. This could include pages like <em>Login</em>, <em>Settings</em>, and <em>Profile</em>. Our HotDog app will have two screens: a <em>DogView</em> page and a <em>Favorites</em> page.</p>
+<p>Dioxus provides a first-party router that natively integrates with web, desktop, and mobile. For example, on web, whenever you visit the <code>/favorites</code> url in your browser, the corresponding <em>Favorites</em> page will load. The Dioxus router is very powerful, and most importantly, type-safe. You can rest easy knowing that users will never be sent to an invalid route. To achieve this, we first need to add the "Router" feature to the Cargo.toml file:</p>
+<pre><code class="language-toml">[dependencies]
+dioxus = { version = "0.7.0", features = ["fullstack", "router"] } # &lt;----- add "router"
+</code></pre>
+<p>Next, the Dioxus router is defined as an enum with the <code>Routable</code> derive attribute:</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/guide_router.rs:new_router}}</code></pre>
+<p>With the Dioxus router, every route is an enum variant with a <code>#[route]</code> attribute that specifics the route's URL. Whenever the router renders our route, the component of the same name will be rendered.</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/guide_router.rs:new_router_with_component}}</code></pre>
+<h2 id="rendering-the-route"><a class="header" href="#rendering-the-route">Rendering the Route</a></h2>
+<p>Now that we have our app's <code>Route</code> defined, we need to render it. Let's change our <code>app</code> component to render the <code>Route {}</code> component instead of the <code>DogView</code>.</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/guide_router.rs:rendering_the_route}}</code></pre>
+<p>When the <code>Router {}</code> component renders, it will parse the document's current URL into a <code>Route</code> variant. If the url doesn't parse properly, the router will render nothing unless you add a "catch-all" route:</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/guide_router.rs:catch_all}}</code></pre>
+<p>Note here that the <code>PageNotFound</code> route takes the "segments" parameter. Dioxus routes are not only type-safe as variants, but also type-safe with URL parameters. For more information on how this works, <a href="../essentials/router/index.html">check the router guide</a>.</p>
+<p>At this point, we should see our app, but this time without its Title.</p>
+<p><img src="/assets/06_docs/no_navbar.png" alt="No Navbar" /></p>
+<h2 id="rendering-the-navbar-with-a-layout"><a class="header" href="#rendering-the-navbar-with-a-layout">Rendering the NavBar with a Layout</a></h2>
+<p>We're rendering our DogView component, but unfortunately we no longer see our Title. Let's add that back and turn it into a NavBar!</p>
+<p>In our <code>src/components/nav.rs</code> file, we'll add back our Title code, but rename it to NavBar and modify it with two new items: the <code>Link {}</code> and <code>Outlet</code> components.</p>
+<pre><code class="language-rust">use crate::Route;
+{{#include ../docs-router/src/doc_examples/guide_router.rs:nav_bar}}</code></pre>
+<p>The <code>Link {}</code> component wraps the anchor <code>&lt;a&gt;</code> element with a type-safe interface. This means any struct that implements <code>Routable</code> - anything that can <code>.to_string()</code> - is a valid navigation target.</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/guide_router.rs:link}}</code></pre>
+<p>The Link component takes many different arguments, making it possible to extend and customize for your use-case.</p>
+<p>In <code>NavBar</code>, we also added an <code>Outlet::&lt;Route&gt; {}</code> component. When the Router component renders, it first looks for any child <code>Outlet</code> components. If one is present, it renders the current route <em>under the outlet</em>. This lets us wrap the current page in extra elements - in this case, the NavBar. If no Outlet is present, then the current route is simply rendered where the <code>Router {}</code> is declared.</p>
+<p>To actually add the NavBar component to our app, we need to update our <code>Route</code> enum with the <code>#[layout]</code> attribute. This forces the router to render the <code>NavBar</code> component <em>first</em> so it can expose its <code>Outlet {}</code>.</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/guide_router.rs:nav_bar_router}}</code></pre>
+<p>The <code>layout</code> attribute instructs the Router to wrap the following enum variants in the given component.</p>
+<pre><code class="language-rust  ignore">Router  {
+    NavBar {
+        Outlet {
+            if route == “/” {
+                DogView {}
+            }
+        }
+    }
+}</code></pre>
+<p>Visually, this should be straight-forward to understand. Note that the Router and Outlet share the same <code>Route</code> generic type.</p>
+<p><img src="/assets/06_docs/routeroutlet.png" alt="RouterLayout" /></p>
+<h2 id="adding-a-favorites-route"><a class="header" href="#adding-a-favorites-route">Adding a Favorites Route</a></h2>
+<p>Now that we understand the fundamentals of routing, let's finally add our <em>Favorites</em> page so we can view the dog photos we saved.</p>
+<p>We'll start by creating an empty component <code>src/components/favorites.rs</code>:</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/guide_router.rs:favorites}}</code></pre>
+<p>And then let's make sure to add a new variant in our <code>Route</code> enum:</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/guide_router.rs:favorites_router}}</code></pre>
+<p>To make sure the user can reach this page, let's also add a button in the nav that points to it.</p>
+<pre><code class="language-rust">use crate::Route;
+{{#include ../docs-router/src/doc_examples/guide_router.rs:nav_bar_favorites_link}}</code></pre>
+<h2 id="our-favorites-page"><a class="header" href="#our-favorites-page">Our Favorites Page</a></h2>
+<p>Finally, we can build our favorites page. Let's add a new <code>list_dogs</code> server function that fetches the 10 most recently saved dog photos:</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/guide_router.rs:list_dogs}}</code></pre>
+<p>Now, we can fill in our component. We're going to use the same <code>use_resource</code> hook from earlier. Resolving the request from the server might take some time, so we'll use the <code>.suspend()?</code> method on <code>Resource</code> to wait for the request to finish before mapping the contents to a list.</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/guide_router.rs:favorites_list_dogs}}</code></pre>
+<p>As a stretch goal, try adding a button that lets the user also delete items from the database.</p>
+<p><img src="/assets/06_docs/hotdogfull.mp4" alt="FullDemo" /></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../tutorial/databases.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../tutorial/bundle.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../tutorial/databases.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../tutorial/bundle.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+        <script>
+            window.playground_line_numbers = true;
+        </script>
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js"></script>
+        <script src="../mode-rust.js"></script>
+        <script src="../editor.js"></script>
+        <script src="../theme-dawn.js"></script>
+        <script src="../theme-tomorrow_night.js"></script>
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

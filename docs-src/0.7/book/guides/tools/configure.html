@@ -1,0 +1,576 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Configure Project</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/DioxusLabs/dioxus/edit/main/docs/guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/DioxusLabs/dioxus/edit/main/docs/guide/src/guides/tools/configure.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="configure-project"><a class="header" href="#configure-project">Configure Project</a></h1>
+<p>This chapter will teach you how to configure the CLI with the <code>Dioxus.toml</code> file. There's an <a href="#config-example">example</a> which has comments to describe individual keys. You can copy that or view this documentation for a more complete learning experience.</p>
+<p>"🔒" indicates a mandatory item. Some headers are mandatory, but none of the keys inside them are. In that case, you only need to include the header, but no keys. It might look weird, but it's normal.</p>
+<h2 id="structure"><a class="header" href="#structure">Structure</a></h2>
+<p>Each header has its TOML form directly under it.</p>
+<h3 id="application-"><a class="header" href="#application-">Application 🔒</a></h3>
+<pre><code class="language-toml">[application]
+</code></pre>
+<p>Application-wide configuration. Applies to both web and desktop.</p>
+<ul>
+<li><strong>asset_dir</strong> - The directory with your static assets. The CLI will automatically copy these assets into the <strong>out_dir</strong> after a build/serve.
+<pre><code class="language-toml">asset_dir = "public"
+</code></pre>
+</li>
+<li><strong>sub_package</strong> - The sub package in the workspace to build by default.
+<pre><code class="language-toml">sub_package = "my-crate"
+</code></pre>
+</li>
+</ul>
+<h3 id="webapp-"><a class="header" href="#webapp-">Web.App 🔒</a></h3>
+<pre><code class="language-toml">[web.app]
+</code></pre>
+<p>Web-specific configuration.</p>
+<ul>
+<li><strong>title</strong> - The title of the web page.
+<pre><code class="language-toml"># HTML title tag content
+title = "project_name"
+</code></pre>
+</li>
+<li><strong>base_path</strong> - The base path to build the application for serving at. This can be useful when serving your application in a subdirectory under a domain. For example, when building a site to be served on GitHub Pages.
+<pre><code class="language-toml"># The application will be served at domain.com/my_application/, so we need to modify the base_path to the path where the application will be served
+base_path = "my_application"
+</code></pre>
+</li>
+</ul>
+<h3 id="webwatcher-"><a class="header" href="#webwatcher-">Web.Watcher 🔒</a></h3>
+<pre><code class="language-toml">[web.watcher]
+</code></pre>
+<p>Development server configuration.</p>
+<ul>
+<li>
+<p><strong>reload_html</strong> - If this is true, the cli will rebuild the index.html file every time the application is rebuilt</p>
+<pre><code class="language-toml">reload_html = true
+</code></pre>
+</li>
+<li>
+<p><strong>watch_path</strong> - The files &amp; directories to monitor for changes</p>
+<pre><code class="language-toml">watch_path = ["src", "public"]
+</code></pre>
+</li>
+<li>
+<p><strong>index_on_404</strong> - If enabled, Dioxus will serve the root page when a route is not found.
+<em>This is needed when serving an application that uses the router</em>. However, when serving your app using something else than Dioxus (e.g. GitHub Pages), you will have to check how to configure it on that platform. In GitHub Pages, you can make a copy of <code>index.html</code> named <code>404.html</code> in the same directory.</p>
+<pre><code class="language-toml">index_on_404 = true
+</code></pre>
+</li>
+</ul>
+<h3 id="webresource-"><a class="header" href="#webresource-">Web.Resource 🔒</a></h3>
+<pre><code class="language-toml">[web.resource]
+</code></pre>
+<p>Static resource configuration.</p>
+<ul>
+<li>
+<p><strong>style</strong> - CSS files to include in your application.</p>
+<pre><code class="language-toml">style = [
+   # Include from public_dir.
+   "./assets/style.css",
+   # Or some asset from online cdn.
+   "https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.css"
+]
+</code></pre>
+</li>
+<li>
+<p><strong>script</strong> - JavaScript files to include in your application.</p>
+<pre><code class="language-toml">script = [
+    # Include from asset_dir.
+    "./public/index.js",
+    # Or from an online CDN.
+    "https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.js"
+]
+</code></pre>
+</li>
+</ul>
+<h3 id="webresourcedev-"><a class="header" href="#webresourcedev-">Web.Resource.Dev 🔒</a></h3>
+<pre><code class="language-toml">[web.resource.dev]
+</code></pre>
+<p>This is the same as <a href="#webresource-"><code>[web.resource]</code></a>, but it only works in development servers. For example, if you want to include a file in a <code>dx serve</code> server, but not a <code>dx serve --release</code> server, put it here.</p>
+<h3 id="webproxy"><a class="header" href="#webproxy">Web.Proxy</a></h3>
+<pre><code class="language-toml">[[web.proxy]]
+</code></pre>
+<p>Configuration related to any proxies your application requires during development. Proxies will forward requests to a new service.</p>
+<ul>
+<li><strong>backend</strong> - The URL to the server to proxy. The CLI will forward any requests under the backend relative route to the backend instead of returning 404
+<pre><code class="language-toml">backend = "http://localhost:8000/api/"
+</code></pre>
+This will cause any requests made to the dev server with prefix /api/ to be redirected to the backend server at http://localhost:8000. The path and query parameters will be passed on as-is (path rewriting is currently not supported).</li>
+</ul>
+<h3 id="webhttps"><a class="header" href="#webhttps">Web.https</a></h3>
+<pre><code class="language-toml">[[web.https]]
+</code></pre>
+<p>Controls the https config for the CLI.</p>
+<ul>
+<li><strong>enabled</strong> enables or disables https in the CLI
+<pre><code class="language-toml">enabled = true
+</code></pre>
+</li>
+<li><strong>mkcert</strong> enables or disables generating certs with the mkcert CLI
+<pre><code class="language-toml">mkcert = true
+</code></pre>
+</li>
+<li><strong>key_path</strong> sets the path to use for the https key
+<pre><code class="language-toml">key_path = "/path/to/key"
+</code></pre>
+</li>
+<li><strong>cert_path</strong> sets the path to use for the https cert
+<pre><code class="language-toml">cert_path = "/path/to/cert"
+</code></pre>
+</li>
+</ul>
+<h3 id="webpre_compress"><a class="header" href="#webpre_compress">Web.pre_compress</a></h3>
+<p>If this setting is enabled, the CLI will pre-compress the built assets in release mode with brotli. This setting is enabled by default.</p>
+<pre><code class="language-toml">[web]
+pre_compress = true
+</code></pre>
+<h3 id="webwasm_opt"><a class="header" href="#webwasm_opt">Web.wasm_opt</a></h3>
+<p>Controls the wasm-opt config for the CLI.</p>
+<ul>
+<li><strong>level</strong> sets the level of optimization to use for wasm-opt in release builds.
+<ul>
+<li>z: optimize aggressively for size</li>
+<li>s: optimize for size</li>
+<li>1: optimize for speed</li>
+<li>2: optimize for more for speed</li>
+<li>3: optimize for even more for speed</li>
+<li>4: optimize aggressively for speed (default)</li>
+</ul>
+<pre><code class="language-toml">level = "z"
+</code></pre>
+</li>
+<li><strong>debug</strong> keep debug symbols in the wasm file even in release builds
+<pre><code class="language-toml">debug = true
+</code></pre>
+</li>
+</ul>
+<h3 id="bundle"><a class="header" href="#bundle">Bundle</a></h3>
+<pre><code class="language-toml">[bundle]
+</code></pre>
+<p>Controls the bundling process for your application. Dioxus uses tauri-bundler under the hood. This section only includes a subset of the options available in tauri-bundler. More options can be found in the tauri-bundler <a href="https://v1.tauri.app/v1/guides/building/#configuration-options">documentation</a>.</p>
+<ul>
+<li><strong>identifier</strong> - A unique identifier for your application (e.g., <code>com.dioxuslabs</code>).
+<pre><code class="language-toml">identifier = "com.dioxuslabs"
+</code></pre>
+</li>
+<li><strong>publisher</strong> - The name of the entity publishing the application.
+<pre><code class="language-toml">publisher = "DioxusLabs"
+</code></pre>
+</li>
+<li><strong>icon</strong> - Paths to icon files to be used in the bundle. Icon files must be square and 16, 24, 32, 64, or 256 pixels in size. PNG icons must have a 32 bit depth in the RGBA format. If you use a <code>.icns</code> file is must fit <a href="https://github.com/tauri-apps/tauri/blob/d8db5042a28635259f646c329c3ec5ccf23eac9e/tooling/cli/src/helpers/icns.json">this</a> format. The icons must include a <code>.icns</code> icon for macOS, <code>.ico</code> for Windows and <code>.png</code> for Linux.
+<pre><code class="language-toml">icon = [
+   "icons/32x32.png",
+   "icons/128x128.png",
+   "icons/128x128@2x.png",
+   "icons/icon.icns",
+   "icons/icon.ico"
+]
+</code></pre>
+</li>
+<li><strong>resources</strong> - Additional files to include in the bundle. Each asset is copied from the path and is accessible from the bundle at the same path. Any <a href="../../essentials/ui/assets.html">assets</a> are automatically bundled with the installer.
+<pre><code class="language-toml">resources = ["path/to/resource"]
+</code></pre>
+</li>
+<li><strong>copyright</strong> - Copyright information for the application.
+<pre><code class="language-toml">copyright = "Copyright 2023 DioxusLabs"
+</code></pre>
+</li>
+<li><strong>category</strong> - The category of the application. Must be one of <code>Business</code>, <code>DeveloperTool</code>, <code>Education</code>, <code>Entertainment</code>, <code>Finance</code>, <code>Game</code>, <code>ActionGame</code>, <code>AdventureGame</code>, <code>ArcadeGame</code>, <code>BoardGame</code>, <code>CardGame</code>, <code>CasinoGame</code>, <code>DiceGame</code>, <code>EducationalGame</code>, <code>FamilyGame</code>, <code>KidsGame</code>, <code>MusicGame</code>, <code>PuzzleGame</code>, <code>RacingGame</code>, <code>RolePlayingGame</code>, <code>SimulationGame</code>, <code>SportsGame</code>, <code>StrategyGame</code>, <code>TriviaGame</code>, <code>WordGame</code>, <code>GraphicsAndDesign</code>, <code>HealthcareAndFitness</code>, <code>Lifestyle</code>, <code>Medical</code>, <code>Music</code>, <code>News</code>, <code>Photography</code>, <code>Productivity</code>, <code>Reference</code>, <code>SocialNetworking</code>, <code>Sports</code>, <code>Travel</code>, <code>Utility</code>, <code>Video</code>, or <code>Weather</code>
+<pre><code class="language-toml">category = "Utility"
+</code></pre>
+</li>
+<li><strong>short_description</strong> - A brief description of the application.
+<pre><code class="language-toml">short_description = "A utility application built with Dioxus"
+</code></pre>
+</li>
+<li><strong>long_description</strong> - A detailed description of the application.
+<pre><code class="language-toml">long_description = "This application provides various utility functions..."
+</code></pre>
+</li>
+<li><strong>external_bin</strong> - Paths to external sidecar binaries to include in the bundle. These bundles may be accessed at runtime with the name of the binary (not the absolute path). <strong>the target triple will be automatically added to the binary name before it is added to the bundle.</strong>
+<pre><code class="language-toml">external_bin = ["path/to/external_binary"] # On macos, the binary at path/to/external_binary-aarch64-apple-darwin will be included in the bundle. It can be accessed at runtime with the name external_binary
+</code></pre>
+</li>
+</ul>
+<h3 id="bundlemacos"><a class="header" href="#bundlemacos">Bundle.macos</a></h3>
+<pre><code class="language-toml">[bundle.macos]
+</code></pre>
+<p>Configuration options for macOS bundles.</p>
+<ul>
+<li><strong>frameworks</strong> - List of frameworks to include in the bundle.
+<pre><code class="language-toml">frameworks = ["CoreML"]
+</code></pre>
+</li>
+<li><strong>minimum_system_version</strong> - Minimum macOS version required. (default: <code>10.13</code>)
+<pre><code class="language-toml">minimum_system_version = "10.13"
+</code></pre>
+</li>
+<li><strong>license</strong> - Path to the license file.
+<pre><code class="language-toml">license = "LICENSE.txt"
+</code></pre>
+</li>
+<li><strong>exception_domain</strong> - Domain for exception handling. The domain must be lowercase without a port or protocol.
+<pre><code class="language-toml">exception_domain = "mysite.com"
+</code></pre>
+</li>
+<li><strong>signing_identity</strong> - macOS signing identity.
+<pre><code class="language-toml">signing_identity = "SIGNING IDENTITY KEYCHAIN ENTRY NAME"
+</code></pre>
+</li>
+<li><strong>provider_short_name</strong> - Provider short name for the bundle.
+<pre><code class="language-toml">provider_short_name = "DioxusLabs"
+</code></pre>
+</li>
+<li><strong>entitlements</strong> - Path to the entitlements file.
+<pre><code class="language-toml">entitlements = "entitlements.plist"
+</code></pre>
+</li>
+<li><strong>hardened_runtime</strong> - Whether to enable the <a href="https://developer.apple.com/documentation/security/hardened-runtime">hardened runtime</a> in the bundle.
+<pre><code class="language-toml">hardened_runtime = true
+</code></pre>
+</li>
+</ul>
+<h3 id="bundlewindows"><a class="header" href="#bundlewindows">Bundle.windows</a></h3>
+<pre><code class="language-toml">[bundle.windows]
+</code></pre>
+<p>Configuration options for Windows bundles.</p>
+<ul>
+<li><strong>digest_algorithm</strong> - Sets the file digest algorithm used for signing.
+<pre><code class="language-toml">digest_algorithm = "sha-256"
+</code></pre>
+</li>
+<li><strong>certificate_thumbprint</strong> - SHA1 hash of the signing certificate.
+<pre><code class="language-toml">certificate_thumbprint = "A1B2C3D4E5F6..."
+</code></pre>
+</li>
+<li><strong>timestamp_url</strong> - Sets the server to used for timestamping the signature.
+<pre><code class="language-toml">timestamp_url = "http://timestamp.digicert.com"
+</code></pre>
+</li>
+<li><strong>tsp</strong> - Whether to use the time stamping protocol.
+<pre><code class="language-toml">tsp = true
+</code></pre>
+</li>
+<li><strong>icon_path</strong> - Path to the icon for the system tray icon. (defaults to <code>./icons/icon.ico</code>)
+<pre><code class="language-toml">icon_path = "assets/icon.ico"
+</code></pre>
+</li>
+<li><strong>webview_install_mode</strong> - Installation mode for WebView2.
+EmbedBootstrapper: embed the WebView2 bootstrapper into the installer
+<pre><code class="language-toml">[webview_install_mode.EmbedBootstrapper]
+silent = true
+</code></pre>
+DownloadBootstrapper: download the WebView2 bootstrapper in the installer at runtime
+<pre><code class="language-toml">[webview_install_mode.DownloadBootstrapper]
+silent = true
+</code></pre>
+OfflineInstaller: Embed the WebView2 installer into the main installer
+<pre><code class="language-toml">[webview_install_mode.OfflineInstaller]
+silent = true
+</code></pre>
+FixedRuntime: Use a fixed path to the WebView2 runtime
+<pre><code class="language-toml">[webview_install_mode.FixedRuntime]
+path = "path/to/runtime"
+</code></pre>
+Skip: Does not install WebView2 as part of the installer. This will cause the application to fail if webview was not already installed
+<pre><code class="language-toml">webview_install_mode = "Skip"
+</code></pre>
+</li>
+</ul>
+<h2 id="config-example"><a class="header" href="#config-example">Config example</a></h2>
+<p>This includes all fields, mandatory or not.</p>
+<pre><code class="language-toml">[application]
+
+# App name
+name = "project_name"
+
+# `build` &amp; `serve` output path
+out_dir = "dist"
+
+# The static resource path
+asset_dir = "public"
+
+[web.app]
+
+# HTML title tag content
+title = "project_name"
+
+[web.watcher]
+
+# When watcher is triggered, regenerate the `index.html`
+reload_html = true
+
+# Which files or dirs will be monitored
+watch_path = ["src", "public"]
+
+# Include style or script assets
+[web.resource]
+
+# CSS style file
+style = []
+
+# Javascript code file
+script = []
+
+[web.resource.dev]
+
+# Same as [web.resource], but for development servers
+
+# CSS style file
+style = []
+
+# JavaScript files
+script = []
+
+[[web.proxy]]
+backend = "http://localhost:8000/api/"
+
+[bundle]
+identifier = "com.dioxuslabs"
+publisher = "DioxusLabs"
+icon = "assets/icon.png"
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../guides/tools/creating.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../guides/tools/android.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../guides/tools/creating.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../guides/tools/android.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+        <script>
+            window.playground_line_numbers = true;
+        </script>
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../../ace.js"></script>
+        <script src="../../mode-rust.js"></script>
+        <script src="../../editor.js"></script>
+        <script src="../../theme-dawn.js"></script>
+        <script src="../../theme-tomorrow_night.js"></script>
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Managing Dependencies</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/DioxusLabs/dioxus/edit/main/docs/guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/DioxusLabs/dioxus/edit/main/docs/guide/src/essentials/fullstack/managing_dependencies.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="managing-fullstack-dependencies"><a class="header" href="#managing-fullstack-dependencies">Managing Fullstack Dependencies</a></h1>
+<p>Fullstack applications build to at least two different binaries:</p>
+<ul>
+<li>The client application that runs the desktop, mobile, or web application</li>
+<li>The server that renders the initial HTML and runs server functions</li>
+</ul>
+<p>Those binaries tend to have different dependencies and those dependencies often are only compatible with a specific target platform. This guide will cover how fullstack manages each binary's dependencies and how to add dependencies that are only compatible with one binary/target.</p>
+<h2 id="client-and-server-feature-flags"><a class="header" href="#client-and-server-feature-flags">Client and Server Feature Flags</a></h2>
+<p>Dioxus uses feature flags to differentiate between the different binaries a single library can produce. Each target binary should have a feature flag in your <code>Cargo.toml</code> file that enables the corresponding feature in dioxus. For example, if you are targeting <code>web</code> and <code>desktop</code> with a fullstack server, you would add the following to your <code>Cargo.toml</code>:</p>
+<pre><code class="language-toml">[dependencies]
+# Don't include any renderer features in your dioxus dependency directly. They will be added in feature flags.
+# The fullstack feature enables the bindings between the server and client without enabling a specific binary target.
+dioxus = { version = "0.6", features = ["fullstack"] }
+
+[features]
+# The web feature enables the web renderer. Dioxus will automatically enable the feature you define that activates `dioxus/web` when building the client WASM bundle.
+web = ["dioxus/web"]
+# The desktop feature enables the desktop renderer. Dioxus will automatically enable the feature you define that activates `dioxus/desktop` when building the client native bundle.
+desktop = ["dioxus/desktop"]
+# The server feature enables server functions and server-side rendering. Dioxus will automatically enable the feature you define that activates `dioxus/server` when building the server binary.
+server = ["dioxus/server"]
+</code></pre>
+<p>Feature flags like these for the client and server are automatically generated by the CLI when you run <code>dx new</code> with fullstack enabled. If you are creating a project from scratch, you will need to add the feature flags manually.</p>
+<blockquote>
+<p>If you are not familiar with features in rust, you can read more about feature flags in the <a href="https://doc.rust-lang.org/cargo/reference/features.html">cargo reference</a>.</p>
+</blockquote>
+<h2 id="adding-server-only-dependencies"><a class="header" href="#adding-server-only-dependencies">Adding Server Only Dependencies</a></h2>
+<p>Many dependencies like <a href="https://docs.rs/tokio/latest/tokio/index.html"><code>tokio</code></a> and <a href="https://docs.rs/axum/latest/axum/index.html"><code>axum</code></a> are only compatible with the server. If these dependencies are enabled when building a WASM bundle for the browser client, you will get a compilation error. For example, if we want to interact with the filesystem in a server function, we might want to add <code>tokio</code>. <code>tokio</code> has utilities for working with async IO like <a href="https://docs.rs/tokio/latest/tokio/fs/struct.File.html"><code>tokio::fs::File</code></a>. Let's try it as a dependency to our fullstack project:</p>
+<pre><code class="language-toml">[dependencies]
+# ...
+# ❌ If tokio is added as a required dependency, it will be included in both the server
+# and the web bundle. The web bundle will fail to build because tokio is not
+# compatible with wasm
+tokio = { version = "1", features = ["full"] }
+</code></pre>
+<p>If we try to compile with tokio as a required dependency, we will get a compilation error like this:</p>
+<pre><code class="language-sh">error[E0432]: unresolved import `crate::sys::IoSourceState`
+  --&gt; /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/mio-1.0.2/src   |source.rs:14:5
+14 | use crate::sys::IoSourceState;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^ no `IoSourceState` in `sys`
+...
+</code></pre>
+<p>Since we added <code>tokio</code> as a dependency for all three binaries, cargo tries to compile it for each target. This fails because <code>tokio</code> is not compatible with the <code>wasm32-unknown-unknown</code> target.</p>
+<p>To fix the issue, we can <strong>make the dependency optional and only enable it in the server feature</strong>:</p>
+<pre><code class="language-toml">[dependencies]
+# ...
+# ✅ Since the tokio dependency is optional, it is not included in the web and desktop
+# bundles.
+tokio = { version = "1", features = ["full"], optional = true }
+
+[features]
+# ...
+# ✅ Since the tokio dependency is enabled in the server feature, it is included in
+# the server binary.
+server = ["dioxus/server", "dep:tokio"]
+</code></pre>
+<p>Now when we build with <code>dx serve</code>, the project compiles successfully.</p>
+<h2 id="adding-client-only-dependencies"><a class="header" href="#adding-client-only-dependencies">Adding Client Only Dependencies</a></h2>
+<p>Many dependencies like <a href="https://docs.rs/wasm-bindgen/latest/wasm_bindgen/index.html"><code>wasm-bindgen</code></a> and <a href="https://docs.rs/web-sys/latest/web_sys/index.html"><code>web-sys</code></a> are only compatible with the client. Unlike server-only dependencies, these dependencies can generally compile on native targets, but they will panic when used outside of the browser.</p>
+<p>You can reduce build times for your server and native binaries by including web dependencies only in the browser client binary.</p>
+<p>Instead of adding web only dependencies to every binary in your project like this:</p>
+<pre><code class="language-toml">[dependencies]
+# ...
+# ❌ If web-sys is added as a required dependency, it will be included in the server,
+# native, and the web bundle which makes build times longer.
+web-sys = { version = "0.3.60", features = ["console"] }
+</code></pre>
+<p>You can make the dependency optional and only enable it in the <code>web</code> feature in your <code>Cargo.toml</code>:</p>
+<pre><code class="language-toml">[dependencies]
+# ...
+# ✅ Since the web-sys dependency is optional, it is not included in the server and
+# native bundles.
+web-sys = { version = "0.3.60", features = ["console"], optional = true }
+
+[features]
+# ...
+# ✅ Since the web-sys dependency is enabled in the web feature, it is included in
+# the web bundle.
+web = ["dioxus/web", "dep:web-sys"]
+</code></pre>
+<h2 id="managing-binary-specific-imports"><a class="header" href="#managing-binary-specific-imports">Managing Binary Specific Imports</a></h2>
+<p>Once you have set up binary specific dependencies, you need to adjust any of your imports to only import the dependencies when building for the binary that includes those dependencies.</p>
+<p>For example, if <code>tokio</code> is only enabled in the server feature, you will need to import it like this:</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/server_tokio_import.rs:tokio_import}}</code></pre>
+<p>You also need to only compile any usage of the dependency when the feature is enabled:</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/server_tokio_import.rs:tokio_usage}}</code></pre>
+<p>It may be more convenient to group server or client specific code into a module that is only compiled when the feature is enabled:</p>
+<pre><code class="language-rust">{{#include ../docs-router/src/doc_examples/server_tokio_import.rs:tokio_module}}</code></pre>
+<blockquote>
+<p>The <a href="https://doc.rust-lang.org/reference/conditional-compilation.html">rust reference</a> has more information about conditional compilation in rust.</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../essentials/fullstack/hydration.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../essentials/fullstack/extractors.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../essentials/fullstack/hydration.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../essentials/fullstack/extractors.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+        <script>
+            window.playground_line_numbers = true;
+        </script>
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../../ace.js"></script>
+        <script src="../../mode-rust.js"></script>
+        <script src="../../editor.js"></script>
+        <script src="../../theme-dawn.js"></script>
+        <script src="../../theme-tomorrow_night.js"></script>
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>
